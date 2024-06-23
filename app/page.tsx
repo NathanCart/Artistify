@@ -1,26 +1,26 @@
-import Image from 'next/image';
+import { cookies } from 'next/headers';
 
-export default async function Home() {
+export default async function Home({ params, searchParams }: { params: any; searchParams: any }) {
+	const accessToken = cookies().get('spotify_access_token');
+
 	const getArtists = async () => {
-		const response = await fetch('https://api.spotify.com/v1/artists', {
-			headers: {
-				Authorization: `Bearer ${process.env.NEXT_PUBLIC_SPOTIFY_API_SECRET}`,
-			},
-		});
+		const response = await fetch(
+			`https://api.spotify.com/v1/search/?q=${searchParams?.q ?? ''}&type=${
+				searchParams?.type ?? 'artist'
+			}`,
+			{
+				headers: {
+					Authorization: `Bearer ${accessToken?.value}`,
+				},
+			}
+		);
 		const data = await response.json();
 		return data;
 	};
 
 	const artists = await getArtists();
 
-	//   var state = generateRandomString(16);
-	// var scope = 'user-read-private user-read-email';
-
-	// response_type: 'code',
-	//     client_id: client_id,
-	//     scope: scope,
-	//     redirect_uri: redirect_uri,
-	//     state: state
+	console.log(artists, 'artists');
 
 	return (
 		<main className="container">

@@ -12,14 +12,12 @@ export async function GET(request: NextRequest) {
 	const spotifyAccessToken = cookies().get('spotify_access_token');
 
 	if (spotifyAccessToken) {
-		console.log('cookie exists, redirecting to /');
 		return redirect('/');
 	}
 
 	if (state === null) {
 		return redirect('/#');
 	} else {
-		console.log('state exists, fetching access token');
 		const authOptions = {
 			url: 'https://accounts.spotify.com/api/token',
 			form: {
