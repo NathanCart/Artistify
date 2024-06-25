@@ -47,7 +47,9 @@ export async function GET(request: NextRequest) {
 		const data = await response.json();
 		const accessToken = data.access_token;
 
-		cookies().set('spotify_access_token', accessToken);
+		cookies().set('spotify_access_token', accessToken, {
+			maxAge: 3600,
+		});
 
 		return redirect('/');
 	}

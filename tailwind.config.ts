@@ -7,7 +7,13 @@ const config: Config = {
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	theme: {
+		darkMode: 'selector',
+
 		extend: {
+			fontFamily: {
+				sans: ['Raleway'],
+				body: ['Open Sans'],
+			},
 			container: {
 				center: true,
 				padding: '1rem',
