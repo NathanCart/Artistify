@@ -6,20 +6,20 @@
 	h1 {
 		@apply text-3xl;
 		@apply font-bold;
-		@apply text-neutral-200;
+		@apply text-neutral-50;
 	}
 	h2 {
 		@apply text-2xl;
 		@apply font-bold;
-		@apply text-neutral-200;
+		@apply text-neutral-50;
 	}
 	h3 {
 		@apply font-bold;
-		@apply text-neutral-200;
+		@apply text-neutral-50;
 	}
 	p {
 		@apply font-body;
 		@apply text-sm;
-		@apply text-neutral-200;
+		@apply text-neutral-50;
 	}
 }

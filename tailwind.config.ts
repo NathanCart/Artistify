@@ -10,6 +10,21 @@ const config: Config = {
 		darkMode: 'selector',
 
 		extend: {
+			colors: {
+				neutral: {
+					50: '#ececec',
+					100: '#e0e0e0',
+					200: '#c2c2c2',
+					300: '#8c8c8c',
+					400: '#666060',
+					500: '#4d4949',
+					600: '#3a3333',
+					700: '#2a2525',
+					800: '#1c1818',
+					900: '#121010',
+					950: '#0a0808',
+				},
+			},
 			fontFamily: {
 				sans: ['Raleway'],
 				body: ['Open Sans'],

@@ -2,6 +2,10 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Provider } from '@/Provider';
+import { config } from '@fortawesome/fontawesome-svg-core';
+import IconProvider from './components/IconProvider';
+import Sidebar from './components/Sidebar';
+config.autoAddCss = false; /* eslint-disable import/first */
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -29,7 +33,14 @@ export default function RootLayout({
 				/>
 			</head>
 			<body className="bg-neutral-900">
-				<Provider>{children}</Provider>
+				<IconProvider>
+					<Provider>
+						<div className="flex bg-neutral-900 h-full min-h-screen duration-1000 transition-all">
+							<Sidebar />
+							<div className="bg-neutral-900 w-full">{children}</div>
+						</div>
+					</Provider>
+				</IconProvider>
 			</body>
 		</html>
 	);

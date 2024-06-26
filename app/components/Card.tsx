@@ -28,7 +28,7 @@ export default function Card(props: ICard) {
 
 			<div className="p-2">
 				<h3 className="line-clamp-1">{props.title}</h3>
-				<p>{props.description}</p>
+				<p className="text-neutral-400">{props.description}</p>
 			</div>
 		</div>
 	);
