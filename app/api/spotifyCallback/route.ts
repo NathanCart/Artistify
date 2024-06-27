@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
 	const spotifyAccessToken = cookies().get('spotify_access_token');
 
-	if (spotifyAccessToken) {
+	if (!!spotifyAccessToken?.value) {
 		return redirect('/');
 	}
 
@@ -23,8 +23,9 @@ export async function GET(request: NextRequest) {
 			url: 'https://accounts.spotify.com/api/token',
 			form: {
 				code: code,
-				redirect_uri: 'http://localhost:3000',
-				grant_type: 'client_credentials',
+				redirect_uri: 'http://localhost:3000/api/spotifyCallback',
+				grant_type: 'authorization_code',
+				state: state,
 			},
 			headers: {
 				'content-type': 'application/x-www-form-urlencoded',
@@ -47,23 +48,25 @@ export async function GET(request: NextRequest) {
 
 		const data = await response.json();
 
-		console.log(data, 'data');
 		const accessToken = data.access_token;
-
-		const refreshTokenResponse = await fetch('https://accounts.spotify.com/api/refresh_token', {
-			headers: {
-				'content-type': 'application/x-www-form-urlencoded',
-			},
-			method: 'POST',
-			body: querystring.stringify({
-				code: code,
-				grant_type: 'refresh_token',
-			}),
-		});
 
 		cookies().set('spotify_access_token', accessToken, {
 			maxAge: 3600,
 		});
+
+		if (!!accessToken) {
+			const currentUserResponse = await fetch('https://api.spotify.com/v1/me', {
+				headers: {
+					method: 'GET',
+					'content-type': 'application/json',
+					Authorization: 'Bearer ' + data.access_token,
+				},
+			});
+
+			const userData = await currentUserResponse.json();
+
+			console.log(userData, 'current users data');
+		}
 
 		return redirect('/');
 	}

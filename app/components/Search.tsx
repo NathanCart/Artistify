@@ -8,6 +8,7 @@ import { useState } from 'react';
 interface ISearch {
 	className?: string;
 	onSearch?: (search: string) => void;
+	variant?: 'light' | 'dark';
 }
 
 export default function Search(props: ISearch) {
@@ -29,7 +30,9 @@ export default function Search(props: ISearch) {
 	return (
 		<div className={`${!!props.className && props.className} relative group `}>
 			<input
-				className={`container font-body text-sm pl-10 p-4 w-full max-w-full rounded-full bg-neutral-800 text-neutral-100 focus:outline-none focus:ring-2 border border-neutral-900 group-hover:border-red-700 ring-red-500 focus:ring-primary-500 focus:ring-opacity-50 `}
+				className={`container font-body text-sm pl-10 p-4 w-full max-w-full rounded-full ${
+					props.variant === 'light' ? 'bg-neutral-600' : 'bg-neutral-800'
+				}  text-neutral-100 focus:outline-none focus:ring-2 border border-neutral-900 group-hover:border-red-700 ring-red-500 focus:ring-primary-500 focus:ring-opacity-50 `}
 				value={searchValue}
 				type="text"
 				placeholder="Search for an artist..."
