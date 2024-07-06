@@ -40,6 +40,11 @@ export default function Search(props: ISearch) {
 					setSearchValue(e.target.value);
 					router.push(pathname + '?' + createQueryString('q', e.target.value));
 
+					if (pathname !== '/') {
+						router.push(`/?q=${e.target.value}`, {
+							scroll: false,
+						});
+					}
 					props?.onSearch?.(e.target.value);
 				}}
 			/>

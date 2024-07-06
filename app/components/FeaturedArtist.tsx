@@ -8,7 +8,8 @@ import { IUserResponse } from '@/models/user';
 import { AddArtistToList, RemoveArtistFromList, RevalidateTags } from '../actions';
 import Tooltip from './Tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquare, faSquareCheck } from '@fortawesome/pro-duotone-svg-icons';
+import { faSquare, faSquareCheck, faSquareXmark } from '@fortawesome/pro-duotone-svg-icons';
+import { useState } from 'react';
 
 interface IFeaturedArtist {
 	artist: IArtist;
@@ -18,6 +19,8 @@ interface IFeaturedArtist {
 
 export default function FeaturedArtist(props: IFeaturedArtist) {
 	const isActive = props.user.artists?.map((a) => a.id).includes(props.artist.id);
+	const [hoveredArtist, setHoveredArtist] = useState<boolean | null>(null);
+
 	return (
 		<div
 			onClick={async () => {
@@ -37,7 +40,11 @@ export default function FeaturedArtist(props: IFeaturedArtist) {
 			className={`grid grid-cols-12 gap-6 ${!!props.className && props.className} `}
 		>
 			<div className="col-span-12 md:col-span-6 lg:col-span-4">
-				<div className="bg-neutral-800 p-4 rounded-md cursor-pointer hover:scale-105 transition-all relative">
+				<div
+					className="bg-neutral-800 p-4 rounded-md cursor-pointer hover:scale-105 transition-all relative"
+					onMouseOver={() => setHoveredArtist(true)}
+					onMouseLeave={() => setHoveredArtist(null)}
+				>
 					<Tooltip
 						text={isActive ? 'Remove from your list' : 'Add to your list'}
 						className="!absolute left-6 top-6 "
@@ -45,7 +52,13 @@ export default function FeaturedArtist(props: IFeaturedArtist) {
 						<FontAwesomeIcon
 							className="text-neutral-50 "
 							size="2x"
-							icon={isActive ? faSquareCheck : faSquare}
+							icon={
+								isActive && hoveredArtist
+									? faSquareXmark
+									: hoveredArtist || isActive
+									? faSquareCheck
+									: faSquare
+							}
 						/>
 					</Tooltip>
 					<Image
