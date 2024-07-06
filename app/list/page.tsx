@@ -25,12 +25,11 @@ export default async function Home({ params, searchParams }: { params: any; sear
 				<Search className="w-full  max-w-full md:hidden block" />
 			</Suspense>
 			<>
-				<h2 className="mb-4 mt-8">Top result</h2>
+				<h2 className="mb-4 mt-8">Most recent</h2>
 				<FeaturedArtist artist={currentUser?.artists?.[0]} />{' '}
 				<h2 className="mb-4 mt-8">Artists</h2>
 				<ArtistList
 					user={currentUser}
-					className=""
 					artists={currentUser?.artists?.slice(1, currentUser?.artists?.items?.length)}
 				/>
 			</>

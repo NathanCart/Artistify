@@ -12,14 +12,14 @@ export default function Sidebar() {
 				</Suspense>
 				<ul className="text-start p-4 flex flex-col gap-2">
 					<li className="">
+						<a href="/" className="text-neutral-50 hover:text-red-300">
+							Home
+						</a>
+					</li>
+					<li className="">
 						<Link href="/list" className="text-neutral-50 hover:text-red-300">
 							My list
 						</Link>
-					</li>
-					<li className="">
-						<a href="/about" className="text-neutral-50 hover:text-red-300">
-							About
-						</a>
 					</li>
 				</ul>
 			</div>
