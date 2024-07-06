@@ -65,7 +65,17 @@ export async function GET(request: NextRequest) {
 
 			const userData = await currentUserResponse.json();
 
-			console.log(userData, 'current users data');
+			const createUserObjectResponse = await fetch(`${process.env.API_URL}/api/user/`, {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+				},
+				body: JSON.stringify({
+					spotify_id: userData.id,
+				}),
+			});
+
+			const createUserObjectData = await createUserObjectResponse.json();
 		}
 
 		return redirect('/');

@@ -1,4 +1,4 @@
-export interface IUserResponse {
+export interface ISpotifyData {
 	display_name: string;
 	external_urls: IExternalUrls;
 	href: string;
@@ -14,4 +14,10 @@ export interface IUserResponse {
 		filter_locked: boolean;
 	};
 	email: string;
+}
+export interface IUserResponse {
+	id: number;
+	spotify_id: string;
+	artists: IArtist[];
+	spotify_data: ISpotifyData;
 }

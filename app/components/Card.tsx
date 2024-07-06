@@ -7,13 +7,17 @@ interface ICard {
 	image: string;
 	title: string;
 	description: string;
+	onClick: () => Promise<void>;
 }
 
 export default function Card(props: ICard) {
 	const charsInTitle = props.title.length;
 
 	return (
-		<div className="card rounded-lg">
+		<div
+			onClick={props.onClick}
+			className="card rounded-lg cursor-pointer hover:scale-105 transition-all"
+		>
 			{props.image && (
 				<Image
 					priority
