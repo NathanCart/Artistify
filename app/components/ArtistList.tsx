@@ -25,8 +25,6 @@ export default function ArtistList(props: IArtistList) {
 
 	const [hoveredArtist, setHoveredArtist] = useState<number | null>(null);
 
-	console.log(hoveredArtist, 'hoveredArtist');
-
 	return (
 		<div className={`grid grid-cols-12 gap-6 ${!!props.className && props.className}`}>
 			{props.artists?.map((artist, index) => {

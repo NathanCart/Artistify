@@ -66,3 +66,27 @@ export async function RemoveArtistFromList({
 export async function RevalidateTags({ tags }: { tags: string[] }) {
 	await Promise.all(tags.map(async (tag) => await revalidateTag(tag)));
 }
+
+export async function getArtists({
+	q,
+	type,
+	accessToken,
+}: {
+	q: string;
+	type: string;
+	accessToken: string;
+}) {
+	const response = await fetch(
+		`https://api.spotify.com/v1/search/?q=${q ?? ''}&type=${type ?? 'artist'}`,
+		{
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+			next: {
+				tags: ['artists'],
+			},
+		}
+	);
+	const data = await response.json();
+	return data;
+}
