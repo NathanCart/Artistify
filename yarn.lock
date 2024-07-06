@@ -51,6 +51,13 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "6.5.2"
 
+"@fortawesome/pro-duotone-svg-icons@^6.5.2":
+  version "6.5.2"
+  resolved "https://npm.fontawesome.com/@fortawesome/pro-duotone-svg-icons/-/6.5.2/pro-duotone-svg-icons-6.5.2.tgz#dadc9883f20a3b3dca36014ada931151b991acea"
+  integrity sha512-U8dWrpPxajix1ijJQI8dWkSRpDPnXS/3/XJnCzQ6RlPLaGtAY7LelsYHM/byKUeHDpqpySfIGN1lLh63PDU9ag==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "6.5.2"
+
 "@fortawesome/pro-solid-svg-icons@^6.5.2":
   version "6.5.2"
   resolved "https://npm.fontawesome.com/@fortawesome/pro-solid-svg-icons/-/6.5.2/pro-solid-svg-icons-6.5.2.tgz#0996a719cad7a5ce02b20b2da2045d590643a6e1"

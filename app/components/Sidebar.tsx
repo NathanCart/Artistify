@@ -1,20 +1,41 @@
+'use client';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import Search from './Search';
+import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export default function Sidebar() {
+	const pathname = usePathname();
+	const router = useRouter();
+
+	console.log(pathname, 'pathname');
+	const handleOnSearch = (value: string) => {
+		if (pathname !== '/') {
+			router.push(`/?q=${value}`, {
+				scroll: false,
+			});
+		}
+	};
 	return (
 		<div className="sidebar lg:left-0 max-w-0 min-w-0 md:min-w-[300px] duration-500 transition-all overflow-hidden">
 			<div className="fixed h-screen top-1/2 translate -translate-y-1/2  left-0 min-w-0 md:min-w-[300px] max-w-0 duration-500 transition-all md:max-w-full overflow-y-auto text-center bg-neutral-800 p-2 px-0 md:px-2 whitespace-nowrap">
-				<p className="text-lg mt-4 px-4 font-sans font-extrabold">Artistify</p>
+				<p className="text-lg mt-4 px-4 font-sans font-extrabold">
+					<Link href="/">Artistify</Link>
+				</p>
+
 				<Suspense fallback={<div>Loading...</div>}>
-					<Search className="w-full  max-w-full mt-4" variant="light" />
+					<Search
+						onSearch={handleOnSearch}
+						className="w-full  max-w-full mt-4"
+						variant="light"
+					/>
 				</Suspense>
 				<ul className="text-start p-4 flex flex-col gap-2">
 					<li className="">
-						<a href="/" className="text-neutral-50 hover:text-red-300">
+						<Link href="/" className="text-neutral-50 hover:text-red-300">
 							Home
-						</a>
+						</Link>
 					</li>
 					<li className="">
 						<Link href="/list" className="text-neutral-50 hover:text-red-300">

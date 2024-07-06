@@ -7,6 +7,7 @@ interface ICard {
 	image: string;
 	title: string;
 	description: string;
+	icon?: React.ReactNode;
 	onClick: () => Promise<void>;
 }
 
@@ -16,8 +17,10 @@ export default function Card(props: ICard) {
 	return (
 		<div
 			onClick={props.onClick}
-			className="card rounded-lg cursor-pointer hover:scale-105 transition-all"
+			className="card rounded-lg cursor-pointer hover:scale-105 transition-all relative"
 		>
+			{props.icon && props.icon}
+
 			{props.image && (
 				<Image
 					priority

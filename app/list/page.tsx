@@ -10,8 +10,6 @@ export default async function Home({ params, searchParams }: { params: any; sear
 	const accessToken = cookies().get('spotify_access_token');
 	const currentUser = await getCurrentUser(accessToken?.value ?? '');
 
-	console.log('currentUser', currentUser);
-
 	return (
 		<main className="container p-4 relative">
 			<h1 className="text-2xl tmd:text-4xl font-bold mb-8 mt-2">
@@ -25,13 +23,8 @@ export default async function Home({ params, searchParams }: { params: any; sear
 				<Search className="w-full  max-w-full md:hidden block" />
 			</Suspense>
 			<>
-				<h2 className="mb-4 mt-8">Most recent</h2>
-				<FeaturedArtist artist={currentUser?.artists?.[0]} />{' '}
 				<h2 className="mb-4 mt-8">Artists</h2>
-				<ArtistList
-					user={currentUser}
-					artists={currentUser?.artists?.slice(1, currentUser?.artists?.items?.length)}
-				/>
+				<ArtistList user={currentUser} artists={currentUser?.artists} />
 			</>
 		</main>
 	);

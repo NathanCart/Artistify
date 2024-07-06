@@ -1,11 +1,16 @@
 'use client';
 
 import { cookies } from 'next/headers';
-import { AddArtistToList } from '../actions';
+import { AddArtistToList, RemoveArtistFromList, RevalidateTags } from '../actions';
 import Card from './Card';
 //@ts-ignore
 import commaNumber from 'comma-number';
 import { IUserResponse } from '@/models/user';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faC, faCheck, faCube } from '@fortawesome/pro-solid-svg-icons';
+import { faSquareCheck, faSquare } from '@fortawesome/pro-duotone-svg-icons';
+import Tooltip from './Tooltip';
+import { revalidateTag } from 'next/cache';
 interface IArtistList {
 	artists: IArtist[];
 	className?: string;
@@ -13,27 +18,54 @@ interface IArtistList {
 }
 
 export default function ArtistList(props: IArtistList) {
+	const activeArtists = props.user?.artists?.filter((artist) =>
+		props.artists?.map((a) => a.id).includes(artist.id)
+	);
+
 	return (
 		<div className={`grid grid-cols-12 gap-6 ${!!props.className && props.className}`}>
-			{props.artists?.map((artist) => (
-				<div className="grid col-span-6 sm:col-span-3 lg:col-span-2" key={artist.id}>
-					<Card
-						onClick={async () => {
-							const response = await AddArtistToList({
-								artistId: artist.id,
-								spotifyId: props.user?.spotify_id ?? '',
-							});
-							console.log(response, 'response data');
-						}}
-						image={
-							artist.images[0]?.url ??
-							'https://static.thenounproject.com/png/212110-200.png'
-						}
-						title={artist.name}
-						description={`${commaNumber(artist.followers.total)} Followers`}
-					/>
-				</div>
-			))}
+			{props.artists?.map((artist) => {
+				const isActive = activeArtists?.map((a) => a.id).includes(artist.id);
+
+				return (
+					<div className="grid col-span-6 sm:col-span-3 lg:col-span-2" key={artist.id}>
+						<Card
+							icon={
+								<Tooltip
+									text={isActive ? 'Remove from your list' : 'Add to your list'}
+									className="!absolute left-2 top-2 "
+								>
+									<FontAwesomeIcon
+										className="text-neutral-50 "
+										size="2x"
+										icon={isActive ? faSquareCheck : faSquare}
+									/>
+								</Tooltip>
+							}
+							onClick={async () => {
+								if (isActive) {
+									const response = await RemoveArtistFromList({
+										artistId: artist.id,
+										spotifyId: props.user?.spotify_id ?? '',
+									});
+								} else {
+									const response = await AddArtistToList({
+										artistId: artist.id,
+										spotifyId: props.user?.spotify_id ?? '',
+									});
+								}
+								RevalidateTags({ tags: ['user', 'artists'] });
+							}}
+							image={
+								artist.images[0]?.url ??
+								'https://static.thenounproject.com/png/212110-200.png'
+							}
+							title={artist.name}
+							description={`${commaNumber(artist.followers.total)} Followers`}
+						/>
+					</div>
+				);
+			})}
 		</div>
 	);
 }

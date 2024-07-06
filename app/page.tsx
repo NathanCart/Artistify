@@ -18,6 +18,9 @@ export default async function Home({ params, searchParams }: { params: any; sear
 				headers: {
 					Authorization: `Bearer ${accessToken?.value}`,
 				},
+				next: {
+					tags: ['artists'],
+				},
 			}
 		);
 		const data = await response.json();
@@ -52,7 +55,10 @@ export default async function Home({ params, searchParams }: { params: any; sear
 				{!!artists?.artists?.items?.length ? (
 					<>
 						<h2 className="mb-4 mt-8">Top result</h2>
-						<FeaturedArtist artist={artists?.artists?.items?.[0]} />{' '}
+						<FeaturedArtist
+							artist={artists?.artists?.items?.[0]}
+							user={currentUser}
+						/>{' '}
 						<h2 className="mb-4 mt-8">Artists</h2>
 						<ArtistList
 							user={currentUser}
