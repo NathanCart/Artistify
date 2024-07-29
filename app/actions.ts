@@ -27,6 +27,19 @@ export async function getCurrentUser(accessToken: string) {
 	return response.json();
 }
 
+export async function getUsers(search: string) {
+	const response = await fetch(`${process.env.API_URL}/api/user/?search=${search}`, {
+		headers: {
+			method: 'GET',
+		},
+		next: {
+			tags: ['user'],
+		},
+	});
+
+	return response.json();
+}
+
 export async function AddArtistToList({
 	spotifyId,
 	artistId,

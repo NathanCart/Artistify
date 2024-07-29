@@ -72,6 +72,7 @@ export async function GET(request: NextRequest) {
 				},
 				body: JSON.stringify({
 					spotify_id: userData.id,
+					display_name: userData.display_name,
 				}),
 			});
 

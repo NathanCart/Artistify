@@ -27,7 +27,7 @@ export default function Card(props: ICard) {
 					sizes="192px"
 					height={192}
 					width={192}
-					className=" aspect-square w-full rounded-md bg-neutral-800"
+					className=" aspect-square w-full rounded-md bg-neutral-800 object-cover"
 					src={props.image}
 					alt={props.title}
 				/>

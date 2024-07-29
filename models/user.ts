@@ -21,3 +21,9 @@ export interface IUserResponse {
 	artists: IArtist[];
 	spotify_data: ISpotifyData;
 }
+export type IUser = {
+	id: number;
+	spotify_id: string;
+	artists: IArtist[];
+	spotify_data: ISpotifyData;
+};

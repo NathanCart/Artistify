@@ -31,7 +31,7 @@ export default async function HomePage({ searchParams, currentUser, artists }: I
 				alt={currentUser?.spotify_data?.display_name}
 			/>
 			<Suspense fallback={<div>Loading...</div>}>
-				<Search className="w-full  max-w-full md:hidden block" />
+				<Search id="q" className="w-full  max-w-full md:hidden block" />
 			</Suspense>
 			<>
 				{!!artists?.artists?.items?.length ? (
