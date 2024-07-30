@@ -19,8 +19,10 @@ export default function Card(props: ICard) {
 			onClick={props.onClick}
 			className="card rounded-lg cursor-pointer hover:scale-105 transition-all relative"
 		>
-			{props.icon && props.icon}
-
+			<div className="z-20 relative">{props.icon && props.icon}</div>
+			<div
+				className={`absolute top-0 left-0 right-0 aspect-square w-full rounded-md opacity-40 z-10 bg-neutral-950`}
+			></div>
 			{props.image && (
 				<Image
 					priority
@@ -32,7 +34,6 @@ export default function Card(props: ICard) {
 					alt={props.title}
 				/>
 			)}
-
 			<div className="p-2">
 				<h3 className="line-clamp-1">{props.title}</h3>
 				<p className="text-neutral-400">{props.description}</p>
