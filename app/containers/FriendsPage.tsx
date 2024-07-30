@@ -1,11 +1,9 @@
 'use client';
 import { IUserResponse } from '@/models/user';
-import { Suspense } from 'react';
-import ArtistList from '../components/ArtistList';
-import Avatar from '../components/Avatar';
-import Search from '../components/Search';
 import FriendList from '../components/FriendList';
 import Header from '../components/Header';
+import Search from '../components/Search';
+import Divider from '../components/Divider';
 
 interface IFriendsPage {
 	searchParams: any;
@@ -30,6 +28,7 @@ export default async function FriendsPage({
 
 			<FriendList user={currentUser} users={friends} />
 
+			<Divider className="-mx-4" />
 			<>
 				<h2 className="text-2xl tmd:text-4xl font-bold  mt-2">Find new friends!</h2>
 				<p className="text-sm mb-4  font-body text-neutral-300">

@@ -1,3 +1,5 @@
+'use client';
+
 import { IUserResponse } from '@/models/user';
 import Avatar from './Avatar';
 
