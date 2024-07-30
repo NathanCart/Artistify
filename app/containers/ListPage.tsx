@@ -6,6 +6,7 @@ import Avatar from '../components/Avatar';
 import FeaturedArtist from '../components/FeaturedArtist';
 import Search from '../components/Search';
 import { IUserResponse } from '@/models/user';
+import Header from '../components/Header';
 
 interface IListPage {
 	searchParams: any;
@@ -15,15 +16,12 @@ interface IListPage {
 export default async function ListPage({ searchParams, currentUser }: IListPage) {
 	return (
 		<main className="container p-4 relative">
-			<Avatar
-				src={currentUser?.spotify_data?.images?.[1]?.url}
-				alt={currentUser?.spotify_data?.display_name}
+			<Header
+				currentUser={currentUser}
+				title="Artists you've seen!"
+				description="Your list of artists you've seen live!"
 			/>
 
-			<h1 className="text-2xl tmd:text-4xl font-bold  mt-2">Artists you've seen!</h1>
-			<p className="text-sm mb-8 font-body text-neutral-300">
-				Your list of artists you've seen live!
-			</p>
 			<Suspense fallback={<div>Loading...</div>}>
 				<Search id="q" className="w-full  max-w-full md:hidden block" />
 			</Suspense>

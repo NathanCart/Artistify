@@ -6,6 +6,7 @@ import Avatar from '../components/Avatar';
 import FeaturedArtist from '../components/FeaturedArtist';
 import Search from '../components/Search';
 import { IUserResponse } from '@/models/user';
+import Header from '../components/Header';
 
 interface IHomePage {
 	searchParams: any;
@@ -18,12 +19,11 @@ export default async function HomePage({ searchParams, currentUser, artists }: I
 
 	return (
 		<main className="container p-4 relative">
-			<h1 className="text-2xl tmd:text-4xl font-bold  mt-2">
-				Welcome, {currentUser?.spotify_data?.display_name}
-			</h1>
-			<p className="text-sm mb-8 font-body text-neutral-300">
-				Save artists and bands you've seen live to never forget!
-			</p>
+			<Header
+				currentUser={currentUser}
+				title={`Welcome, ${currentUser?.spotify_data?.display_name}`}
+				description="Save artists and bands you've seen live to never forget!"
+			/>
 			{!hasSearch && (
 				<>
 					<h2 className="mb-4 mt-8 md:hidden block">Search for an artist</h2>

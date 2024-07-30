@@ -5,6 +5,7 @@ import ArtistList from '../components/ArtistList';
 import Avatar from '../components/Avatar';
 import Search from '../components/Search';
 import FriendList from '../components/FriendList';
+import Header from '../components/Header';
 
 interface IFriendsPage {
 	searchParams: any;
@@ -21,14 +22,12 @@ export default async function FriendsPage({
 }: IFriendsPage) {
 	return (
 		<main className="container p-4 relative">
-			<Avatar
-				src={currentUser?.spotify_data?.images?.[1]?.url}
-				alt={currentUser?.spotify_data?.display_name}
+			<Header
+				currentUser={currentUser}
+				title="Friends list"
+				description="View your friends and the artists they've seen live!"
 			/>
-			<h1 className="text-2xl tmd:text-4xl font-bold  mt-2">Friends list</h1>
-			<p className="text-sm mb-8 font-body text-neutral-300">
-				View your friends and the artists they've seen live!
-			</p>
+
 			<FriendList user={currentUser} users={friends} />
 
 			<>
