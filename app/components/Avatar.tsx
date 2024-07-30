@@ -13,7 +13,6 @@ interface IAvatar {
 export default function Avatar(props: IAvatar) {
 	const [open, setOpen] = useState(false);
 
-	console.log('open', open);
 	return (
 		<div className={`${!!props.className ? props.className : ''} relative`}>
 			<div

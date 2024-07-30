@@ -1,5 +1,6 @@
 'use server';
 
+import { IUserResponse } from '@/models/user';
 import { revalidateTag } from 'next/cache';
 
 export async function updateUser(spotifyId: string) {
@@ -24,11 +25,26 @@ export async function getCurrentUser(accessToken: string) {
 		},
 	});
 
-	return response.json();
+	const data: IUserResponse = await response.json();
+
+	return data;
 }
 
 export async function getUsers(search: string) {
 	const response = await fetch(`${process.env.API_URL}/api/user/?search=${search}`, {
+		headers: {
+			method: 'GET',
+		},
+		next: {
+			tags: ['user'],
+		},
+	});
+
+	return response.json();
+}
+
+export async function getFriends(userId: string) {
+	const response = await fetch(`${process.env.API_URL}/api/user/friends/?spotifyId=${userId}`, {
 		headers: {
 			method: 'GET',
 		},
@@ -102,4 +118,40 @@ export async function getArtists({
 	);
 	const data = await response.json();
 	return data;
+}
+
+export async function AddFriendToList({
+	spotifyId,
+	friendId,
+}: {
+	spotifyId: string;
+	friendId: number;
+}) {
+	const response = await fetch(`${process.env.API_URL}/api/user/add-friend/`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ spotifyId, friendId }),
+	});
+
+	return response.json();
+}
+
+export async function RemoveFriendFromList({
+	spotifyId,
+	friendId,
+}: {
+	spotifyId: string;
+	friendId: number;
+}) {
+	const response = await fetch(`${process.env.API_URL}/api/user/remove-friend/`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ spotifyId, friendId }),
+	});
+
+	return response.json();
 }

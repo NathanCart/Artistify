@@ -18,12 +18,20 @@ export interface ISpotifyData {
 export interface IUserResponse {
 	id: number;
 	spotify_id: string;
+	display_name: string;
+	avatar_url: string;
+	followers: number;
+	friends: number[];
 	artists: IArtist[];
 	spotify_data: ISpotifyData;
 }
 export type IUser = {
 	id: number;
 	spotify_id: string;
+	display_name: string;
+	avatar_url: string;
+	followers: number;
+	friends: number[];
 	artists: IArtist[];
 	spotify_data: ISpotifyData;
 };

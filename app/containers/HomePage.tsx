@@ -14,13 +14,16 @@ interface IHomePage {
 }
 
 export default async function HomePage({ searchParams, currentUser, artists }: IHomePage) {
-	const hasSearch = searchParams?.q;
+	const hasSearch = !!searchParams?.q;
 
 	return (
 		<main className="container p-4 relative">
-			<h1 className="text-2xl tmd:text-4xl font-bold mb-8 mt-2">
+			<h1 className="text-2xl tmd:text-4xl font-bold  mt-2">
 				Welcome, {currentUser?.spotify_data?.display_name}
 			</h1>
+			<p className="text-sm mb-8 font-body text-neutral-300">
+				Save artists and bands you've seen live to never forget!
+			</p>
 			{!hasSearch && (
 				<>
 					<h2 className="mb-4 mt-8 md:hidden block">Search for an artist</h2>

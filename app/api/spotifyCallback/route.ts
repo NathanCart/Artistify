@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import querystring from 'querystring';
 import { cookies } from 'next/headers';
 import { json } from 'stream/consumers';
+import { ISpotifyData, IUser, IUserResponse } from '@/models/user';
 
 export async function GET(request: NextRequest) {
 	const params = request.nextUrl.searchParams;
@@ -63,7 +64,7 @@ export async function GET(request: NextRequest) {
 				},
 			});
 
-			const userData = await currentUserResponse.json();
+			const userData: ISpotifyData = await currentUserResponse.json();
 
 			const createUserObjectResponse = await fetch(`${process.env.API_URL}/api/user/`, {
 				method: 'POST',
@@ -73,6 +74,8 @@ export async function GET(request: NextRequest) {
 				body: JSON.stringify({
 					spotify_id: userData.id,
 					display_name: userData.display_name,
+					avatar_url: userData.images[1]?.url,
+					followers: userData.followers.total,
 				}),
 			});
 
