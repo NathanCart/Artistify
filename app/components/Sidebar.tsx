@@ -14,22 +14,18 @@ export default function Sidebar() {
 				<Suspense fallback={<div>Loading...</div>}>
 					<Search id="q" className="w-full  max-w-full mt-4" variant="light" />
 				</Suspense>
-				<ul className="text-start p-4 flex flex-col gap-2">
-					<li className="">
-						<Link href="/" className="m-0 link link-hover">
-							Home
-						</Link>
-					</li>
-					<li className="">
-						<Link href="/list" className="m-0 link link-hover">
-							My list
-						</Link>
-					</li>
-					<li className="">
-						<Link href="/friends" className="m-0 link link-hover">
-							Friends
-						</Link>
-					</li>
+
+				<ul className="join join-vertical w-full rounded-sm mt-4 ">
+					<Link href="/" className="btn join-item justify-start">
+						<li className="">Home</li>
+					</Link>
+
+					<Link href="/list" className="btn join-item justify-start">
+						<li className="">My List</li>
+					</Link>
+					<Link href="/friends" className="btn join-item justify-start">
+						<li className="">Friends</li>
+					</Link>
 				</ul>
 			</div>
 		</div>

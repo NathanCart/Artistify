@@ -37,22 +37,26 @@ export default function FriendList(props: IFriendList) {
 						<Card
 							isLoading={props.isLoading}
 							icon={
-								<Tooltip
-									text={isActive ? 'Remove from your list' : 'Add to your list'}
-									className="!absolute left-2 top-2 "
-								>
-									<FontAwesomeIcon
-										className="text-secondary"
-										size="2x"
-										icon={
-											isActive && isHovered
-												? faSquareXmark
-												: isHovered || isActive
-												? faSquareCheck
-												: faSquare
+								props.isLoading ? null : (
+									<Tooltip
+										text={
+											isActive ? 'Remove from your list' : 'Add to your list'
 										}
-									/>
-								</Tooltip>
+										className="!absolute left-2 top-2 "
+									>
+										<FontAwesomeIcon
+											className="text-secondary"
+											size="2x"
+											icon={
+												isActive && isHovered
+													? faSquareXmark
+													: isHovered || isActive
+													? faSquareCheck
+													: faSquare
+											}
+										/>
+									</Tooltip>
+								)
 							}
 							onClick={async () => {
 								if (isActive) {
