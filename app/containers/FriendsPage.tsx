@@ -31,7 +31,7 @@ export default async function FriendsPage({
 			<Divider className="-mx-4" />
 			<>
 				<h2 className="text-2xl tmd:text-4xl font-bold  mt-2">Find new friends!</h2>
-				<p className="text-sm mb-4  font-body text-neutral-300">
+				<p className="text-sm mb-4  font-body text-secondary-content">
 					Search for friends by their Spotify username to view what bands and festivals
 					they've been to.
 				</p>

@@ -41,7 +41,7 @@ export default function FeaturedArtist(props: IFeaturedArtist) {
 		>
 			<div className="col-span-12 md:col-span-6 lg:col-span-4">
 				<div
-					className="bg-neutral-800 p-4 rounded-md cursor-pointer hover:scale-105 transition-all relative"
+					className="bg-base-200 p-4 rounded-md cursor-pointer hover:scale-105 transition-all relative"
 					onMouseOver={() => setHoveredArtist(true)}
 					onMouseLeave={() => setHoveredArtist(null)}
 				>
@@ -50,7 +50,7 @@ export default function FeaturedArtist(props: IFeaturedArtist) {
 						className="!absolute left-6 top-6 "
 					>
 						<FontAwesomeIcon
-							className="text-neutral-50 "
+							className="text-secondary"
 							size="2x"
 							icon={
 								isActive && hoveredArtist
@@ -82,7 +82,7 @@ export default function FeaturedArtist(props: IFeaturedArtist) {
 					<p className="text-lg md:text-xl font-extralight font-sans mt-2">
 						{props?.artist?.name}
 					</p>
-					<p className="text-sm  text-neutral-400">
+					<p className="text-sm ">
 						{commaNumber(props?.artist?.followers?.total)} Followers
 					</p>
 				</div>

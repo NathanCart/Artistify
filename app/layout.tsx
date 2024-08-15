@@ -18,7 +18,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className="">
+		<html lang="en" className="" data-theme="cupcake">
 			<head>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -32,12 +32,12 @@ export default function RootLayout({
 					rel="stylesheet"
 				/>
 			</head>
-			<body className="bg-neutral-900">
+			<body className="bg-base">
 				<IconProvider>
 					<Provider>
-						<div className="flex bg-neutral-900 h-full min-h-screen duration-1000 transition-all">
+						<div className="flex  h-full min-h-screen duration-1000 transition-all">
 							<Sidebar />
-							<div className="bg-neutral-900 w-full">{children}</div>
+							<div className=" w-full">{children}</div>
 						</div>
 					</Provider>
 				</IconProvider>

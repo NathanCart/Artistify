@@ -58,7 +58,6 @@ export default async function HomePage({ searchParams, currentUser, artists }: I
 					<>{hasSearch && <h2 className="mb-4 mt-8">No artists found...</h2>}</>
 				)}
 			</>
-			)
 		</main>
 	);
 }

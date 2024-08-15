@@ -32,16 +32,16 @@ export default function Avatar(props: IAvatar) {
 				></div>
 
 				<div
-					className={`bg-neutral-600 w-fit right-1/3  top-10 p-2 ${
+					className={`bg-base-200 w-fit right-1/3 top-10 p-2 prose ${
 						open ? 'absolute' : 'hidden'
 					}`}
 					tabIndex={0}
 				>
 					<Link href="/profile">
-						<p className="text-neutral-100 p-2">Profile</p>
+						<p className="m-0">Profile</p>
 					</Link>
 					<Link href="/logout">
-						<p className="text-neutral-100 p-2">Logout</p>
+						<p className="m-0">Logout</p>
 					</Link>
 				</div>
 				<Image

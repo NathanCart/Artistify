@@ -37,8 +37,8 @@ export default function Search(props: ISearch) {
 		<div className={`${!!props.className && props.className} relative group `}>
 			<input
 				className={`container font-body text-sm pl-10 p-4 w-full max-w-full rounded-full ${
-					props.variant === 'light' ? 'bg-neutral-600' : 'bg-neutral-800'
-				}  text-neutral-100 focus:outline-none focus:ring-2 border border-neutral-900 group-hover:border-red-700 ring-red-500 focus:ring-primary-500 focus:ring-opacity-50 `}
+					props.variant === 'light' ? 'bg-base' : 'bg-base-200'
+				}  prose focus:outline-none focus:ring-2 border border-primary-content group-hover:border-primary ring-primary focus:ring-primary-500 focus:ring-opacity-50 `}
 				value={searchValue}
 				type="text"
 				placeholder={props.placeholder ?? 'Search for an artist...'}
@@ -58,7 +58,7 @@ export default function Search(props: ISearch) {
 			/>
 			<FontAwesomeIcon
 				icon={faSearch}
-				className="absolute left-4 top-1/2 transform -translate-y-1/2 text-neutral-500 group-hover:text-neutral-300"
+				className="absolute left-4 top-1/2 transform -translate-y-1/2 text-secondary-content group-hover:text-secondary-content"
 			/>
 			<div
 				onClick={() => {
@@ -69,7 +69,7 @@ export default function Search(props: ISearch) {
 					!!search ? 'block' : 'hidden'
 				}`}
 			>
-				<FontAwesomeIcon icon={faClose} className={` text-neutral-300 cursor-pointer `} />
+				<FontAwesomeIcon icon={faClose} className={`  cursor-pointer `} />
 			</div>
 		</div>
 	);

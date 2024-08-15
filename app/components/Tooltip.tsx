@@ -17,7 +17,7 @@ export default function Tooltip(props: ITooltip) {
 			className={`${!!props.className ? props.className : ''} relative`}
 		>
 			<div
-				className={`text-nowrap opacity-0 pointer-events-none absolute z-50 top-6 left-1 transition-all bg-neutral-900 text-neutral-50 p-2 rounded-md text-xs ${
+				className={`text-nowrap opacity-0 pointer-events-none absolute z-50 top-6 left-1 transition-all bg-base-300 text-primary-content p-2 rounded-md text-xs ${
 					show && 'opacity-90 pointer-events-auto'
 				}`}
 			>

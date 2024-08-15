@@ -39,7 +39,7 @@ export default function FriendList(props: IFriendList) {
 									className="!absolute left-2 top-2 "
 								>
 									<FontAwesomeIcon
-										className="text-neutral-50 "
+										className="text-secondary"
 										size="2x"
 										icon={
 											isActive && isHovered
