@@ -5,6 +5,7 @@ import { Provider } from '@/Provider';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import IconProvider from './components/IconProvider';
 import Sidebar from './components/Sidebar';
+import ReactQueryProvider from './components/QueryClientProvider';
 config.autoAddCss = false; /* eslint-disable import/first */
 
 export const metadata: Metadata = {
@@ -33,14 +34,16 @@ export default function RootLayout({
 				/>
 			</head>
 			<body className="bg-base">
-				<IconProvider>
-					<Provider>
-						<div className="flex  h-full min-h-screen duration-1000 transition-all">
-							<Sidebar />
-							<div className=" w-full">{children}</div>
-						</div>
-					</Provider>
-				</IconProvider>
+				<ReactQueryProvider>
+					<IconProvider>
+						<Provider>
+							<div className="flex  h-full min-h-screen duration-1000 transition-all">
+								<Sidebar />
+								<div className=" w-full">{children}</div>
+							</div>
+						</Provider>
+					</IconProvider>
+				</ReactQueryProvider>
 			</body>
 		</html>
 	);

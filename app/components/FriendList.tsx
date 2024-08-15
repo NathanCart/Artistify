@@ -9,9 +9,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import Tooltip from './Tooltip';
 interface IFriendList {
-	users: IUser[];
+	isLoading?: boolean;
+	users: IUser[] | undefined;
 	className?: string;
-	user: IUserResponse;
+	user: IUserResponse | undefined;
 }
 
 export default function FriendList(props: IFriendList) {
@@ -22,8 +23,9 @@ export default function FriendList(props: IFriendList) {
 	const [hoveredFriend, setHoveredFriend] = useState<number | null>(null);
 	return (
 		<div className={`grid grid-cols-12 gap-6 ${!!props.className && props.className}`}>
-			{props.users?.map((user, index) => {
-				const isActive = activeFriends?.map((a) => a).includes(user.id);
+			{(props.isLoading ? Array.from({ length: 6 }) : props.users)?.map((user, index) => {
+				const userData = user as IUserResponse;
+				const isActive = activeFriends?.map((a) => a).includes(userData?.id);
 				const isHovered = hoveredFriend === index;
 				return (
 					<div
@@ -33,6 +35,7 @@ export default function FriendList(props: IFriendList) {
 						className="grid col-span-6 sm:col-span-3 lg:col-span-2"
 					>
 						<Card
+							isLoading={props.isLoading}
 							icon={
 								<Tooltip
 									text={isActive ? 'Remove from your list' : 'Add to your list'}
@@ -54,23 +57,23 @@ export default function FriendList(props: IFriendList) {
 							onClick={async () => {
 								if (isActive) {
 									const response = await RemoveFriendFromList({
-										friendId: user.id,
+										friendId: userData?.id,
 										spotifyId: props.user?.spotify_id ?? '',
 									});
 								} else {
 									const response = await AddFriendToList({
-										friendId: user.id,
+										friendId: userData?.id,
 										spotifyId: props.user?.spotify_id ?? '',
 									});
 								}
 								RevalidateTags({ tags: ['user', 'users'] });
 							}}
 							image={
-								user.avatar_url ??
+								userData?.avatar_url ??
 								'https://static.thenounproject.com/png/212110-200.png'
 							}
-							title={user.display_name}
-							description={`${user?.followers ?? 0} followers`}
+							title={userData?.display_name}
+							description={`${userData?.followers ?? 0} followers`}
 						/>
 					</div>
 				);

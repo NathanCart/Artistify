@@ -4,16 +4,19 @@ import { IUserResponse } from '@/models/user';
 import Avatar from './Avatar';
 
 interface IHeader {
-	currentUser: IUserResponse;
+	currentUser: IUserResponse | undefined;
 	title: string;
+	isLoading?: boolean;
 	description?: string;
 }
 export default function Header(props: IHeader) {
+	const { isLoading = false } = props;
 	return (
 		<div className="mb-8 prose">
 			<Avatar
-				src={props.currentUser?.spotify_data?.images?.[1]?.url}
-				alt={props.currentUser?.spotify_data?.display_name}
+				isLoading={isLoading}
+				src={props.currentUser?.spotify_data?.images?.[1]?.url ?? ''}
+				alt={props.currentUser?.spotify_data?.display_name ?? ''}
 			/>
 			<h1 className="mb-0">{props.title}</h1>
 			{!!props.description?.length ? (

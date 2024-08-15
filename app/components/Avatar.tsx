@@ -8,13 +8,16 @@ interface IAvatar {
 	className?: string;
 	src: string;
 	alt: string;
+	isLoading?: boolean;
 }
 
 export default function Avatar(props: IAvatar) {
 	const [open, setOpen] = useState(false);
 
+	const { isLoading = false } = props;
+
 	return (
-		<div className={`${!!props.className ? props.className : ''} relative`}>
+		<div className={`${!!props.className ? props.className : ''} relative `}>
 			<div
 				onClick={() => setOpen((prev) => !prev)}
 				className="flex gap-2 fixed top-6 right-6  items-center group cursor-pointer "
@@ -44,13 +47,17 @@ export default function Avatar(props: IAvatar) {
 						<p className="m-0">Logout</p>
 					</Link>
 				</div>
-				<Image
-					className="rounded-full "
-					src={props.src}
-					alt={props.alt}
-					width={40}
-					height={40}
-				/>
+				<div className={`${props.isLoading && 'skeleton'} w-[40px] h-[40px] rounded-full`}>
+					{!isLoading ? (
+						<Image
+							className="rounded-full m-0"
+							src={props.src}
+							alt={props.alt}
+							width={40}
+							height={40}
+						/>
+					) : null}
+				</div>
 			</div>
 		</div>
 	);

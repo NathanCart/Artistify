@@ -40,7 +40,8 @@ export async function getUsers(search: string) {
 		},
 	});
 
-	return response.json();
+	const result = await response.json();
+	return result;
 }
 
 export async function getFriends(userId: string) {
