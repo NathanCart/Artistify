@@ -13,12 +13,15 @@ import Avatar from './Avatar';
 import Image from 'next/image';
 import { faCheck, faHyphen, faSlash, faXmark } from '@fortawesome/pro-solid-svg-icons';
 import Divider from './Divider';
+import InfiniteScroll from 'react-infinite-scroll-component';
 interface IFriendList {
+	hasNextPage?: boolean;
 	isLoading?: boolean;
 	users: IUser[] | undefined;
 	className?: string;
 	user: IUserResponse | undefined;
 	onInvalidate?: () => void;
+	onLoadMore?: () => void;
 	type: 'list' | 'grid';
 }
 
@@ -32,7 +35,14 @@ const GridView = (props: IFriendList) => {
 	const [hoveredFriend, setHoveredFriend] = useState<number | null>(null);
 
 	return (
-		<div className={`grid grid-cols-12 gap-6 ${!!props.className && props.className}`}>
+		<InfiniteScroll
+			loader={<></>}
+			scrollableTarget="scrollableDiv"
+			className={`grid grid-cols-12 gap-6 ${!!props.className && props.className}`}
+			dataLength={props.users?.length ?? 0} //This is important field to render the next data
+			next={() => props.onLoadMore?.()}
+			hasMore={props.hasNextPage ?? false}
+		>
 			{(props.isLoading ? Array.from({ length: 6 }) : props.users)?.map((user, index) => {
 				const userData = user as IUserResponse;
 				const isActive = activeFriends?.map((a) => a).includes(userData?.id);
@@ -99,7 +109,7 @@ const GridView = (props: IFriendList) => {
 					</div>
 				);
 			})}
-		</div>
+		</InfiniteScroll>
 	);
 };
 
@@ -181,62 +191,6 @@ const ListView = (props: IFriendList) => {
 								/>
 							</Tooltip>
 						)}
-
-						{/* {index === props.users!.length - 1 ? null : <Divider />} */}
-						{/* <Card
-							isLoading={props.isLoading}
-							icon={
-								props.isLoading ? null : (
-									<Tooltip
-										text={
-											isActive ? 'Remove from your list' : 'Add to your list'
-										}
-										className="!absolute left-2 top-2 "
-									>
-										<FontAwesomeIcon
-											className="text-neutral"
-											size="2x"
-											icon={
-												isActive && isHovered
-													? faSquareXmark
-													: isHovered || isActive
-													? faSquareCheck
-													: faSquare
-											}
-										/>
-									</Tooltip>
-								)
-							}
-							onClick={async () => {
-								if (props.isLoading) return;
-
-								if (isActive) {
-									const response = await RemoveFriendFromList({
-										friendId: userData?.id,
-										spotifyId: props.user?.spotify_id ?? '',
-									});
-								} else {
-									const response = await AddFriendToList({
-										friendId: userData?.id,
-										spotifyId: props.user?.spotify_id ?? '',
-									});
-								}
-								await invalidateQuery([
-									'current-user-friends',
-									'friends',
-									'current-user',
-								]);
-								props.onInvalidate?.();
-
-								RevalidateTags({ tags: ['user', 'users'] });
-							}}
-							image={
-								userData?.avatar_url ??
-								'https://static.thenounproject.com/png/212110-200.png'
-							}
-							title={userData?.display_name}
-							description={`${userData?.followers ?? 0} followers`}
-						/> */}
 					</div>
 				);
 			})}

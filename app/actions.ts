@@ -30,15 +30,25 @@ export async function getCurrentUser(accessToken: string) {
 	return data;
 }
 
-export async function getUsers(search: string) {
-	const response = await fetch(`${process.env.API_URL}/api/user/?search=${search}`, {
-		headers: {
-			method: 'GET',
-		},
-		next: {
-			tags: ['user'],
-		},
-	});
+export async function getUsers(search: string, pageNum: number, perPage: number) {
+	const formattedPageNum = pageNum ?? 1;
+	const formattedPerPage = perPage ?? 10;
+
+	console.log(
+		`${process.env.API_URL}/api/user/?search=${search}&page_num=${formattedPageNum}&per_page=${formattedPerPage}`
+	);
+	const response = await fetch(
+		`${process.env.API_URL}/api/user/?search=${search}&page_num=${formattedPageNum}&per_page=${formattedPerPage}`,
+		{
+			headers: {
+				method: 'GET',
+			},
+			next: {
+				tags: ['user'],
+				revalidate: 0,
+			},
+		}
+	);
 
 	const result = await response.json();
 	return result;

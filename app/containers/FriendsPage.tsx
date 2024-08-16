@@ -1,6 +1,6 @@
 'use client';
 import { IUser, IUserResponse } from '@/models/user';
-import { useQuery } from '@tanstack/react-query';
+import { QueryFunction, QueryKey, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getCurrentUser, getFriends, getUsers } from '../actions';
 import Divider from '../components/Divider';
 import FriendList from '../components/FriendList';
@@ -16,12 +16,40 @@ interface IFriendsPage {
 export default function FriendsPage(props: IFriendsPage) {
 	const {
 		data: friendsSearchData,
+		error,
 		isLoading: isLoadingQuery,
-		isError,
-	} = useQuery<IUser[]>({
-		queryFn: async () => await getUsers(props.searchParams['friends-q']),
+		fetchNextPage,
+		hasNextPage,
+		refetch,
+		isFetching,
+
+		isFetchingNextPage,
+		status,
+	} = useInfiniteQuery<Pagination<IUser>>({
 		queryKey: ['friends', props?.searchParams?.['friends-q']] ?? '',
+		// `pageParam` is destructured and used to fetch the correct page
+		queryFn: async ({
+			pageParam,
+		}: {
+			pageParam: unknown | QueryFunction<Pagination<IUser>, QueryKey, unknown> | undefined;
+		}) => {
+			return await getUsers(
+				props.searchParams['friends-q'], // Search query parameter
+				pageParam as number, // Dynamic page number from `pageParam`
+				props.searchParams?.friendsQPerPage ?? 10 // Items per page
+			);
+		},
+		initialPageParam: 1,
+		getNextPageParam: (lastPage, pages) => {
+			if (pages.length < lastPage.total_pages) {
+				return pages.length + 1;
+			}
+			return undefined; // No more pages
+		},
 	});
+
+	const hasSearchedAllPages =
+		friendsSearchData?.pages?.length === friendsSearchData?.pages?.[0].total_pages;
 
 	const {
 		data: currentUser,
@@ -45,6 +73,8 @@ export default function FriendsPage(props: IFriendsPage) {
 			),
 		queryKey: ['current-user-friends'] ?? '',
 	});
+
+	const formattedFriendsPages = friendsSearchData?.pages?.map((page) => page.results).flat();
 
 	return (
 		<main className="container p-4 relative">
@@ -81,10 +111,16 @@ export default function FriendsPage(props: IFriendsPage) {
 				/>
 
 				<FriendList
+					hasNextPage={hasNextPage}
+					onLoadMore={async () => {
+						console.log('load more');
+						await fetchNextPage();
+						refetch();
+					}}
 					type="grid"
 					isLoading={isLoadingQuery}
 					user={currentUser}
-					users={friendsSearchData?.filter(
+					users={formattedFriendsPages?.filter?.(
 						(user) =>
 							!currentUser?.friends?.includes(user.id) && user.id !== currentUser?.id
 					)}
@@ -93,6 +129,14 @@ export default function FriendsPage(props: IFriendsPage) {
 						refetchCurrentUser();
 					}}
 				/>
+				<div className="my-4">
+					{isFetchingNextPage ? (
+						<p className="text-center font-bold ">Loading more...</p>
+					) : null}
+					{hasSearchedAllPages && !isLoadingQuery ? (
+						<p className="text-center font-bold ">Showing all results!</p>
+					) : null}
+				</div>
 			</>
 		</main>
 	);
