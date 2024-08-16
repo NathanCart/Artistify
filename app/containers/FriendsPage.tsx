@@ -6,6 +6,7 @@ import Divider from '../components/Divider';
 import FriendList from '../components/FriendList';
 import Header from '../components/Header';
 import Search from '../components/Search';
+import { Pagination } from '@/models/utils';
 
 interface IFriendsPage {
 	searchParams: any | undefined;
@@ -35,12 +36,15 @@ export default function FriendsPage(props: IFriendsPage) {
 		data: currentFriends,
 		isLoading: isLoadingCurrentFriends,
 		refetch: refetchCurrentFriends,
-	} = useQuery<IUser[] | undefined>({
-		queryFn: async () => await getFriends(currentUser!.spotify_id ?? ''),
+	} = useQuery<Pagination<IUser> | undefined>({
+		queryFn: async () =>
+			await getFriends(
+				currentUser!.spotify_id ?? '',
+				props.searchParams?.friendsPageNum ?? 1,
+				props.searchParams?.friendsPerPage ?? 10
+			),
 		queryKey: ['current-user-friends'] ?? '',
 	});
-
-	console.log(friendsSearchData, 'friendsSearchData');
 
 	return (
 		<main className="container p-4 relative">
@@ -55,7 +59,7 @@ export default function FriendsPage(props: IFriendsPage) {
 				type="list"
 				isLoading={isLoadingCurrentFriends}
 				user={currentUser}
-				users={currentFriends}
+				users={currentFriends?.results}
 				onInvalidate={() => {
 					refetchCurrentFriends();
 					refetchCurrentUser();
@@ -67,7 +71,7 @@ export default function FriendsPage(props: IFriendsPage) {
 				<h2 className="text-2xl tmd:text-4xl font-bold  mt-2">Find new friends!</h2>
 				<p className="text-sm mb-4  font-body text-secondary-content">
 					Search for friends by their Spotify username to view what bands and festivals
-					they've been to.
+					they&apos;ve been to.
 				</p>
 				<Search
 					className="mb-8 max-w-xs"

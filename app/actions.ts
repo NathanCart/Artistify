@@ -44,15 +44,21 @@ export async function getUsers(search: string) {
 	return result;
 }
 
-export async function getFriends(userId: string) {
-	const response = await fetch(`${process.env.API_URL}/api/user/friends/?spotifyId=${userId}`, {
-		headers: {
-			method: 'GET',
-		},
-		next: {
-			tags: ['user'],
-		},
-	});
+export async function getFriends(userId: string, pageNum: number, perPage: number) {
+	const formattedPageNum = pageNum ?? 1;
+	const formattedPerPage = perPage ?? 10;
+
+	const response = await fetch(
+		`${process.env.API_URL}/api/user/friends/?spotifyId=${userId}&page_num=${formattedPageNum}&per_page=${formattedPerPage}`,
+		{
+			headers: {
+				method: 'GET',
+			},
+			next: {
+				tags: ['user'],
+			},
+		}
+	);
 
 	return response.json();
 }
