@@ -44,7 +44,7 @@ export default function ArtistList(props: IArtistList) {
 									className="!absolute left-2 top-2 "
 								>
 									<FontAwesomeIcon
-										className="text-secondary"
+										className="text-neutral"
 										size="2x"
 										icon={
 											isActive && isHovered

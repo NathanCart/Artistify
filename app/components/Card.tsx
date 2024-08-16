@@ -18,7 +18,9 @@ export default function Card(props: ICard) {
 	return (
 		<div
 			onClick={props.onClick}
-			className="card rounded-lg cursor-pointer hover:scale-105 transition-all relative"
+			className={`card rounded-lg  transition-all relative ${
+				!isLoading && 'hover:scale-105 cursor-pointer '
+			}`}
 		>
 			<div className={`z-20 relative ${props.isLoading && 'skeleton'}`}>
 				{props.icon && props.icon}

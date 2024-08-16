@@ -50,7 +50,7 @@ export default function FeaturedArtist(props: IFeaturedArtist) {
 						className="!absolute left-6 top-6 "
 					>
 						<FontAwesomeIcon
-							className="text-secondary"
+							className="text-neutral"
 							size="2x"
 							icon={
 								isActive && hoveredArtist

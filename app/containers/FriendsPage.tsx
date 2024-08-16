@@ -22,17 +22,25 @@ export default function FriendsPage(props: IFriendsPage) {
 		queryKey: ['friends', props?.searchParams?.['friends-q']] ?? '',
 	});
 
-	const { data: currentUser, isLoading: isLoadingCurrentUser } = useQuery<IUserResponse>({
+	const {
+		data: currentUser,
+		isLoading: isLoadingCurrentUser,
+		refetch: refetchCurrentUser,
+	} = useQuery<IUserResponse>({
 		queryFn: async () => await getCurrentUser(props.accessToken?.value ?? ''),
 		queryKey: ['current-user'] ?? '',
 	});
 
-	const { data: currentFriends, isLoading: isLoadingCurrentFriends } = useQuery<
-		IUser[] | undefined
-	>({
+	const {
+		data: currentFriends,
+		isLoading: isLoadingCurrentFriends,
+		refetch: refetchCurrentFriends,
+	} = useQuery<IUser[] | undefined>({
 		queryFn: async () => await getFriends(currentUser!.spotify_id ?? ''),
 		queryKey: ['current-user-friends'] ?? '',
 	});
+
+	console.log(friendsSearchData, 'friendsSearchData');
 
 	return (
 		<main className="container p-4 relative">
@@ -44,9 +52,14 @@ export default function FriendsPage(props: IFriendsPage) {
 			/>
 
 			<FriendList
+				type="list"
 				isLoading={isLoadingCurrentFriends}
 				user={currentUser}
 				users={currentFriends}
+				onInvalidate={() => {
+					refetchCurrentFriends();
+					refetchCurrentUser();
+				}}
 			/>
 
 			<Divider className="-mx-4" />
@@ -64,12 +77,17 @@ export default function FriendsPage(props: IFriendsPage) {
 				/>
 
 				<FriendList
+					type="grid"
 					isLoading={isLoadingQuery}
 					user={currentUser}
 					users={friendsSearchData?.filter(
 						(user) =>
 							!currentUser?.friends?.includes(user.id) && user.id !== currentUser?.id
 					)}
+					onInvalidate={() => {
+						refetchCurrentFriends();
+						refetchCurrentUser();
+					}}
 				/>
 			</>
 		</main>
