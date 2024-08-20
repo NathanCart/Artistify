@@ -7,6 +7,7 @@ import FriendList from '../components/FriendList';
 import Header from '../components/Header';
 import Search from '../components/Search';
 import { Pagination } from '@/models/utils';
+import InfiniteLoaderText from '../components/InfiniteLoaderText';
 
 interface IFriendsPage {
 	searchParams: any | undefined;
@@ -22,7 +23,6 @@ export default function FriendsPage(props: IFriendsPage) {
 		hasNextPage,
 		refetch,
 		isFetching,
-
 		isFetchingNextPage,
 		status,
 	} = useInfiniteQuery<Pagination<IUser>>({
@@ -135,21 +135,15 @@ export default function FriendsPage(props: IFriendsPage) {
 						refetchCurrentUser();
 					}}
 				/>
-				<div className="my-4">
-					{isFetchingNextPage ? (
-						<div className="flex gap-1 items-center justify-center">
-							<p className="text-center font-bold ">Loading more</p>
-							<span className="loading loading-dots loading-xs"></span>
-						</div>
-					) : null}
-					{hasSearchedAllPages && !isLoadingQuery && !hasNoResults ? (
-						<p className="text-center font-bold ">Showing all results!</p>
-					) : null}
-
-					{hasNoResults && !isLoadingQuery ? (
-						<p className="text-center font-bold ">No results found!</p>
-					) : null}
-				</div>
+				<InfiniteLoaderText
+					{...{
+						enabled: true,
+						isFetchingNextPage: isFetchingNextPage || isFetching,
+						hasSearchedAllPages,
+						isLoadingQuery,
+						hasNoResults,
+					}}
+				/>
 			</>
 		</main>
 	);

@@ -12,10 +12,14 @@ import { faSquareCheck, faSquare, faSquareXmark } from '@fortawesome/pro-duotone
 import Tooltip from './Tooltip';
 import { revalidateTag } from 'next/cache';
 import { useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 interface IArtistList {
-	artists: IArtist[];
+	artists: IArtist[] | undefined;
 	className?: string;
-	user: IUserResponse;
+	user: IUserResponse | undefined;
+	hasNextPage?: boolean;
+	onLoadMore?: () => void;
+	currentPage: number;
 }
 
 export default function ArtistList(props: IArtistList) {
@@ -25,8 +29,16 @@ export default function ArtistList(props: IArtistList) {
 
 	const [hoveredArtist, setHoveredArtist] = useState<number | null>(null);
 
+	if (!props.artists) return null;
 	return (
-		<div className={`grid grid-cols-12 gap-6 ${!!props.className && props.className}`}>
+		<InfiniteScroll
+			loader={<></>}
+			scrollableTarget="scrollableDiv"
+			className={`grid grid-cols-12 gap-2 md:gap-6 ${!!props.className && props.className}`}
+			dataLength={props.artists?.length ?? 0} //This is important field to render the next data
+			next={() => props.onLoadMore?.()}
+			hasMore={props.hasNextPage ?? false}
+		>
 			{props.artists?.map((artist, index) => {
 				const isActive = activeArtists?.map((a) => a.id).includes(artist.id);
 				const isHovered = hoveredArtist === index;
@@ -80,6 +92,6 @@ export default function ArtistList(props: IArtistList) {
 					</div>
 				);
 			})}
-		</div>
+		</InfiniteScroll>
 	);
 }

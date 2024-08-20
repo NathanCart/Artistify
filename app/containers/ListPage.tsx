@@ -27,7 +27,7 @@ export default async function ListPage({ searchParams, currentUser }: IListPage)
 			</Suspense>
 			<>
 				<h2 className="mb-4 mt-8"></h2>
-				<ArtistList user={currentUser} artists={currentUser?.artists} />
+				{/* <ArtistList user={currentUser} artists={currentUser?.artists}  /> */}
 			</>
 		</main>
 	);

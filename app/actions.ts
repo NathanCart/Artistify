@@ -117,13 +117,17 @@ export async function getArtists({
 	q,
 	type,
 	accessToken,
+	pageNum,
 }: {
 	q: string;
 	type: string;
 	accessToken: string;
+	pageNum: number;
 }) {
 	const response = await fetch(
-		`https://api.spotify.com/v1/search/?q=${q ?? ''}&type=${type ?? 'artist'}`,
+		`https://api.spotify.com/v1/search/?q=${q ?? ''}&type=${type ?? 'artist'}&limit=20&offset=${
+			(pageNum - 1) * 20
+		}`,
 		{
 			headers: {
 				Authorization: `Bearer ${accessToken}`,

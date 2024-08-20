@@ -12,26 +12,27 @@ import { faSquare, faSquareCheck, faSquareXmark } from '@fortawesome/pro-duotone
 import { useState } from 'react';
 
 interface IFeaturedArtist {
-	artist: IArtist;
+	artist: IArtist | undefined;
 	className?: string;
-	user: IUserResponse;
+	user: IUserResponse | undefined;
 }
 
 export default function FeaturedArtist(props: IFeaturedArtist) {
-	const isActive = props.user.artists?.map((a) => a.id).includes(props.artist.id);
+	const isActive = props.user?.artists?.map((a) => a.id).includes(props.artist?.id ?? '');
 	const [hoveredArtist, setHoveredArtist] = useState<boolean | null>(null);
 
+	if (!props.artist) return null;
 	return (
 		<div
 			onClick={async () => {
 				if (isActive) {
 					const response = await RemoveArtistFromList({
-						artistId: props.artist.id,
+						artistId: props.artist?.id ?? '',
 						spotifyId: props.user?.spotify_id ?? '',
 					});
 				} else {
 					const response = await AddArtistToList({
-						artistId: props.artist.id,
+						artistId: props.artist?.id ?? '',
 						spotifyId: props.user?.spotify_id ?? '',
 					});
 				}
