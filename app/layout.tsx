@@ -39,7 +39,7 @@ export default function RootLayout({
 						<Provider>
 							<div className="flex  h-full min-h-screen duration-1000 transition-all">
 								<Sidebar />
-								<div className=" w-full">{children}</div>
+								<div className=" w-full overflow-x-hidden">{children}</div>
 							</div>
 						</Provider>
 					</IconProvider>

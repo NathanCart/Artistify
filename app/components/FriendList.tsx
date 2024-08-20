@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { faCheck, faHyphen, faSlash, faXmark } from '@fortawesome/pro-solid-svg-icons';
 import Divider from './Divider';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Pagination from './Pagination';
 interface IFriendList {
 	hasNextPage?: boolean;
 	isLoading?: boolean;
@@ -23,6 +24,8 @@ interface IFriendList {
 	onInvalidate?: () => void;
 	onLoadMore?: () => void;
 	type: 'list' | 'grid';
+	totalPages: number;
+	currentPage: number;
 }
 
 const GridView = (props: IFriendList) => {
@@ -38,7 +41,7 @@ const GridView = (props: IFriendList) => {
 		<InfiniteScroll
 			loader={<></>}
 			scrollableTarget="scrollableDiv"
-			className={`grid grid-cols-12 gap-6 ${!!props.className && props.className}`}
+			className={`grid grid-cols-12 gap-2 md:gap-6 ${!!props.className && props.className}`}
 			dataLength={props.users?.length ?? 0} //This is important field to render the next data
 			next={() => props.onLoadMore?.()}
 			hasMore={props.hasNextPage ?? false}
@@ -123,77 +126,88 @@ const ListView = (props: IFriendList) => {
 	const [hoveredFriend, setHoveredFriend] = useState<number | null>(null);
 
 	return (
-		<div
-			className={`grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10 ${
-				!!props.className && props.className
-			}`}
-		>
-			{(props.isLoading ? Array.from({ length: 6 }) : props.users)?.map((user, index) => {
-				const userData = user as IUserResponse;
-				const isActive = activeFriends?.map((a) => a).includes(userData?.id);
-				const isHovered = hoveredFriend === index;
-				return (
-					<div key={index} className="prose flex flex-row gap-2 items-center">
-						{props.isLoading ? (
-							<div className="rounded-full h-[32px] w-[32px] max-h-full skeleton" />
-						) : (
-							<Image
-								className="rounded-full m-0 max-h-full"
-								src={userData?.avatar_url}
-								alt={userData?.display_name}
-								width={32}
-								height={32}
-							/>
-						)}
-
-						<p className={`m-0 flex-1 ${props.isLoading && 'skeleton h-4 w-10'}`}>
-							{userData?.display_name}
-						</p>
-						{props.isLoading ? (
-							<div className="h-4 w-4 skeleton" />
-						) : (
-							<Tooltip text={isActive ? 'Remove friend' : 'Add friend'} className="">
-								<FontAwesomeIcon
-									onClick={async () => {
-										if (props.isLoading) return;
-
-										if (isActive) {
-											const response = await RemoveFriendFromList({
-												friendId: userData?.id,
-												spotifyId: props.user?.spotify_id ?? '',
-											});
-										} else {
-											const response = await AddFriendToList({
-												friendId: userData?.id,
-												spotifyId: props.user?.spotify_id ?? '',
-											});
-										}
-										await invalidateQuery([
-											'current-user-friends',
-											'friends',
-											'current-user',
-										]);
-										props.onInvalidate?.();
-
-										RevalidateTags({ tags: ['user', 'users'] });
-									}}
-									onMouseOver={() => setHoveredFriend(index)}
-									onMouseLeave={() => setHoveredFriend(null)}
-									className="text-neutral cursor-pointer"
-									size="lg"
-									icon={
-										isActive && isHovered
-											? faXmark
-											: isHovered || isActive
-											? faCheck
-											: faHyphen
-									}
+		<div>
+			<div
+				className={`grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-10 ${
+					!!props.className && props.className
+				}`}
+			>
+				{(props.isLoading ? Array.from({ length: 6 }) : props.users)?.map((user, index) => {
+					const userData = user as IUserResponse;
+					const isActive = activeFriends?.map((a) => a).includes(userData?.id);
+					const isHovered = hoveredFriend === index;
+					return (
+						<div key={index} className="prose flex flex-row gap-2 items-center">
+							{props.isLoading ? (
+								<div className="rounded-full h-[32px] w-[32px] max-h-full skeleton" />
+							) : (
+								<Image
+									className="rounded-full m-0 max-h-full"
+									src={userData?.avatar_url}
+									alt={userData?.display_name}
+									width={32}
+									height={32}
 								/>
-							</Tooltip>
-						)}
-					</div>
-				);
-			})}
+							)}
+
+							<p className={`m-0 flex-1 ${props.isLoading && 'skeleton h-4 w-10'}`}>
+								{userData?.display_name}
+							</p>
+							{props.isLoading ? (
+								<div className="h-4 w-4 skeleton" />
+							) : (
+								<Tooltip
+									text={isActive ? 'Remove friend' : 'Add friend'}
+									className=""
+								>
+									<FontAwesomeIcon
+										onClick={async () => {
+											if (props.isLoading) return;
+
+											if (isActive) {
+												const response = await RemoveFriendFromList({
+													friendId: userData?.id,
+													spotifyId: props.user?.spotify_id ?? '',
+												});
+											} else {
+												const response = await AddFriendToList({
+													friendId: userData?.id,
+													spotifyId: props.user?.spotify_id ?? '',
+												});
+											}
+											await invalidateQuery([
+												'current-user-friends',
+												'friends',
+												'current-user',
+											]);
+											props.onInvalidate?.();
+
+											RevalidateTags({ tags: ['user', 'users'] });
+										}}
+										onMouseOver={() => setHoveredFriend(index)}
+										onMouseLeave={() => setHoveredFriend(null)}
+										className="text-neutral cursor-pointer"
+										size="lg"
+										icon={
+											isActive && isHovered
+												? faXmark
+												: isHovered || isActive
+												? faCheck
+												: faHyphen
+										}
+									/>
+								</Tooltip>
+							)}
+						</div>
+					);
+				})}
+			</div>
+			<Pagination
+				className="mt-4"
+				totalPages={props.totalPages}
+				currentPage={props.currentPage}
+				id="friends"
+			/>
 		</div>
 	);
 };

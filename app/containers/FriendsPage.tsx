@@ -36,7 +36,7 @@ export default function FriendsPage(props: IFriendsPage) {
 			return await getUsers(
 				props.searchParams['friends-q'], // Search query parameter
 				pageParam as number, // Dynamic page number from `pageParam`
-				props.searchParams?.friendsQPerPage ?? 10 // Items per page
+				props.searchParams?.friendsQPerPage ?? 18 // Items per page
 			);
 		},
 		initialPageParam: 1,
@@ -50,6 +50,8 @@ export default function FriendsPage(props: IFriendsPage) {
 
 	const hasSearchedAllPages =
 		friendsSearchData?.pages?.length === friendsSearchData?.pages?.[0].total_pages;
+
+	const hasNoResults = friendsSearchData?.pages?.[0].results.length === 0;
 
 	const {
 		data: currentUser,
@@ -71,7 +73,7 @@ export default function FriendsPage(props: IFriendsPage) {
 				props.searchParams?.friendsPageNum ?? 1,
 				props.searchParams?.friendsPerPage ?? 10
 			),
-		queryKey: ['current-user-friends'] ?? '',
+		queryKey: [`current-user-friends-${props.searchParams?.friendsPageNum}`] ?? '',
 	});
 
 	const formattedFriendsPages = friendsSearchData?.pages?.map((page) => page.results).flat();
@@ -94,6 +96,8 @@ export default function FriendsPage(props: IFriendsPage) {
 					refetchCurrentFriends();
 					refetchCurrentUser();
 				}}
+				currentPage={props.searchParams?.friendsPageNum ?? 1}
+				totalPages={currentFriends?.total_pages ?? 1}
 			/>
 
 			<Divider className="-mx-4" />
@@ -111,6 +115,8 @@ export default function FriendsPage(props: IFriendsPage) {
 				/>
 
 				<FriendList
+					currentPage={friendsSearchData?.pages.length ?? 1}
+					totalPages={friendsSearchData?.pages?.[0].total_pages ?? 1}
 					hasNextPage={hasNextPage}
 					onLoadMore={async () => {
 						console.log('load more');
@@ -131,10 +137,17 @@ export default function FriendsPage(props: IFriendsPage) {
 				/>
 				<div className="my-4">
 					{isFetchingNextPage ? (
-						<p className="text-center font-bold ">Loading more...</p>
+						<div className="flex gap-1 items-center justify-center">
+							<p className="text-center font-bold ">Loading more</p>
+							<span className="loading loading-dots loading-xs"></span>
+						</div>
 					) : null}
-					{hasSearchedAllPages && !isLoadingQuery ? (
+					{hasSearchedAllPages && !isLoadingQuery && !hasNoResults ? (
 						<p className="text-center font-bold ">Showing all results!</p>
+					) : null}
+
+					{hasNoResults && !isLoadingQuery ? (
+						<p className="text-center font-bold ">No results found!</p>
 					) : null}
 				</div>
 			</>

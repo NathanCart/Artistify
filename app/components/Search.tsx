@@ -38,7 +38,7 @@ export default function Search(props: ISearch) {
 			<input
 				className={`container font-body text-sm pl-10 p-4 w-full max-w-full rounded-full ${
 					props.variant === 'light' ? 'bg-base' : 'bg-base-200'
-				}  prose focus:outline-none focus:ring-2 border border-primary-content group-hover:border-primary ring-primary focus:ring-primary-500 focus:ring-opacity-50 `}
+				}  prose focus:outline-none focus:ring-2  group-hover:border-primary ring-primary focus:ring-primary-500 focus:ring-opacity-50 `}
 				value={searchValue}
 				type="text"
 				placeholder={props.placeholder ?? 'Search for an artist...'}
