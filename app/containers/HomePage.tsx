@@ -73,6 +73,7 @@ export default function HomePage({ searchParams, accessToken }: IHomePage) {
 	return (
 		<main className="container p-4 relative">
 			<Header
+				isLoading={isLoadingCurrentUser}
 				currentUser={currentUser}
 				title={`Welcome, ${currentUser?.spotify_data?.display_name}`}
 				description="Save artists and bands you've seen live to never forget!"

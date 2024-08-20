@@ -78,6 +78,8 @@ export default function FriendsPage(props: IFriendsPage) {
 
 	const formattedFriendsPages = friendsSearchData?.pages?.map((page) => page.results).flat();
 
+	console.log('formattedFriendsPages', formattedFriendsPages);
+
 	return (
 		<main className="container p-4 relative">
 			<Header
@@ -119,17 +121,13 @@ export default function FriendsPage(props: IFriendsPage) {
 					totalPages={friendsSearchData?.pages?.[0].total_pages ?? 1}
 					hasNextPage={hasNextPage}
 					onLoadMore={async () => {
-						console.log('load more');
 						await fetchNextPage();
 						refetch();
 					}}
 					type="grid"
 					isLoading={isLoadingQuery}
 					user={currentUser}
-					users={formattedFriendsPages?.filter?.(
-						(user) =>
-							!currentUser?.friends?.includes(user.id) && user.id !== currentUser?.id
-					)}
+					users={formattedFriendsPages?.filter?.((user) => user.id !== currentUser?.id)}
 					onInvalidate={() => {
 						refetchCurrentFriends();
 						refetchCurrentUser();
@@ -137,8 +135,8 @@ export default function FriendsPage(props: IFriendsPage) {
 				/>
 				<InfiniteLoaderText
 					{...{
-						enabled: true,
-						isFetchingNextPage: isFetchingNextPage || isFetching,
+						enabled: !!props.searchParams?.['friends-q'],
+						isFetchingNextPage,
 						hasSearchedAllPages,
 						isLoadingQuery,
 						hasNoResults,

@@ -125,8 +125,8 @@ export async function getArtists({
 	pageNum: number;
 }) {
 	const response = await fetch(
-		`https://api.spotify.com/v1/search/?q=${q ?? ''}&type=${type ?? 'artist'}&limit=20&offset=${
-			(pageNum - 1) * 20
+		`https://api.spotify.com/v1/search/?q=${q ?? ''}&type=${type ?? 'artist'}&limit=50&offset=${
+			(pageNum - 1) * 50
 		}`,
 		{
 			headers: {

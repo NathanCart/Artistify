@@ -16,6 +16,7 @@ export default function useAuth({
 	} = useQuery<IUserResponse>({
 		queryFn: async () => await getCurrentUser(accessToken?.value ?? ''),
 		queryKey: ['current-user'] ?? '',
+		enabled: !!accessToken?.value,
 	});
 
 	return { currentUser, isLoadingCurrentUser, refetchCurrentUser };
