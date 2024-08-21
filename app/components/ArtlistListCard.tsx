@@ -18,6 +18,7 @@ interface IArtlistListCard {
 	onMouseLeave: () => void;
 	artist: IArtist;
 	user: IUserResponse | undefined;
+	onChange?: () => void;
 }
 
 export default function ArtlistListCard(props: IArtlistListCard) {
@@ -29,7 +30,10 @@ export default function ArtlistListCard(props: IArtlistListCard) {
 				spotifyId: props.user?.spotify_id ?? '',
 			}),
 		onSuccess: async () => {
+			invalidateQuery(['list']);
 			invalidateQuery(['current-user']);
+
+			props.onChange?.();
 		},
 	});
 
@@ -40,7 +44,10 @@ export default function ArtlistListCard(props: IArtlistListCard) {
 				spotifyId: props.user?.spotify_id ?? '',
 			}),
 		onSuccess: async () => {
+			invalidateQuery(['list']);
 			invalidateQuery(['current-user']);
+
+			props.onChange?.();
 		},
 	});
 
@@ -77,11 +84,11 @@ export default function ArtlistListCard(props: IArtlistListCard) {
 					}
 				}}
 				image={
-					props.artist.images[0]?.url ??
+					props.artist?.images[0]?.url ??
 					'https://static.thenounproject.com/png/212110-200.png'
 				}
-				title={props.artist.name}
-				description={`${commaNumber(props.artist.followers.total)} Followers`}
+				title={props.artist?.name}
+				description={`${commaNumber(props.artist?.followers?.total)} Followers`}
 			/>
 		</div>
 	);

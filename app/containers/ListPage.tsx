@@ -3,7 +3,7 @@ import useAuth from '@/hooks/useAuth';
 import { Pagination } from '@/models/utils';
 import { QueryFunction, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import { getUserArtists } from '../actions';
+import { RevalidateTags, getUserArtists } from '../actions';
 import ArtistList from '../components/ArtistList';
 import Header from '../components/Header';
 import Search from '../components/Search';
@@ -28,7 +28,7 @@ export default function ListPage({ searchParams, accessToken }: IListPage) {
 		isFetchingNextPage,
 		status,
 	} = useInfiniteQuery<Pagination<IArtist>>({
-		queryKey: ['artists', searchParams?.q] ?? '',
+		queryKey: ['list'] ?? '',
 		// `pageParam` is destructured and used to fetch the correct page
 		queryFn: async ({
 			pageParam,
@@ -55,7 +55,7 @@ export default function ListPage({ searchParams, accessToken }: IListPage) {
 
 	const hasSearchedAllPages = artistsData?.pages?.[artistsData?.pages?.length - 1]?.next === null;
 
-	const hasNoResults = !artists?.length;
+	const hasNoResults = !artistsData?.pages?.[0]?.results?.length;
 
 	return (
 		<main className="container p-4 relative">
@@ -69,17 +69,23 @@ export default function ListPage({ searchParams, accessToken }: IListPage) {
 				<Search id="q" className="w-full  max-w-full md:hidden block" />
 			</Suspense>
 			<h2 className="mb-4 mt-8"></h2>
-			<ArtistList
-				currentPage={artistsData?.pages.length ?? 1}
-				hasNextPage={hasNextPage}
-				onLoadMore={async () => {
-					await fetchNextPage();
-					refetch();
-				}}
-				user={currentUser}
-				className=""
-				artists={artists}
-			/>
+			{!hasNoResults ? (
+				<ArtistList
+					onChange={async () => {
+						refetch();
+					}}
+					currentPage={artistsData?.pages.length ?? 1}
+					hasNextPage={hasNextPage}
+					onLoadMore={async () => {
+						await fetchNextPage();
+						refetch();
+					}}
+					user={currentUser}
+					className=""
+					artists={artists}
+				/>
+			) : null}
+
 			<InfiniteLoaderText
 				{...{
 					enabled: !!currentUser,

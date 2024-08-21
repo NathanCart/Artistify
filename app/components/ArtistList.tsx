@@ -12,6 +12,7 @@ interface IArtistList {
 	hasNextPage?: boolean;
 	onLoadMore?: () => void;
 	currentPage: number;
+	onChange?: () => void;
 }
 
 export default function ArtistList(props: IArtistList) {
@@ -36,6 +37,7 @@ export default function ArtistList(props: IArtistList) {
 				const isHovered = hoveredArtist === index;
 				return (
 					<ArtlistListCard
+						onChange={props.onChange}
 						key={index}
 						isActive={isActive}
 						isHovered={isHovered}

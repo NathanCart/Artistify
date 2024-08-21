@@ -70,8 +70,6 @@ export default function HomePage({ searchParams, accessToken }: IHomePage) {
 
 	const hasNoResults = !artists?.length;
 
-	console.log(currentUser, 'current user');
-
 	return (
 		<main className="container p-4 relative">
 			<Header
@@ -97,6 +95,9 @@ export default function HomePage({ searchParams, accessToken }: IHomePage) {
 			<FeaturedArtist artist={artists?.[0]} user={currentUser} />{' '}
 			{!hasNoResults ? <h2 className="mb-4 mt-8">Artists</h2> : null}
 			<ArtistList
+				onChange={async () => {
+					refetch();
+				}}
 				currentPage={artistsData?.pages.length ?? 1}
 				hasNextPage={hasNextPage}
 				onLoadMore={async () => {

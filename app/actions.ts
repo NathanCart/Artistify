@@ -16,7 +16,7 @@ export async function updateUser(spotifyId: string) {
 }
 
 export async function getCurrentUser(accessToken: string) {
-	const response = await fetch(`${process.env.API_URL}/api/user/me?accessToken=${accessToken}`, {
+	const response = await fetch(`${process.env.API_URL}/api/user/me/?accessToken=${accessToken}`, {
 		headers: {
 			method: 'GET',
 		},
@@ -129,7 +129,7 @@ export async function getUserArtists({
 				Authorization: `Bearer ${accessToken}`,
 			},
 			next: {
-				tags: ['artists'],
+				tags: ['user-artists'],
 			},
 		}
 	);
