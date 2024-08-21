@@ -30,6 +30,21 @@ export async function getCurrentUser(accessToken: string) {
 	return data;
 }
 
+export async function getUser(spotifyId: string) {
+	const response = await fetch(`${process.env.API_URL}/api/user/${spotifyId}`, {
+		headers: {
+			method: 'GET',
+		},
+		next: {
+			tags: ['user'],
+		},
+	});
+
+	const data: IUserResponse = await response.json();
+
+	return data;
+}
+
 export async function getUsers(search: string, pageNum: number, perPage: number) {
 	const formattedPageNum = pageNum ?? 1;
 	const formattedPerPage = perPage ?? 10;

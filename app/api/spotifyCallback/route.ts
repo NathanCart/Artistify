@@ -28,6 +28,16 @@ export async function GET(request: NextRequest) {
 				grant_type: 'authorization_code',
 				state: state,
 			},
+			// headers: {
+			// 	'content-type': 'application/x-www-form-urlencoded',
+			// 	Authorization:
+			// 		'Basic ' +
+			// 		Buffer.from(
+			// 			process.env.NEXT_PUBLIC_SPOTIFY_API_CLIENT_ID +
+			// 				':' +
+			// 				process.env.NEXT_PUBLIC_SPOTIFY_API_SECRET
+			// 		).toString('base64'),
+			// },
 			headers: {
 				'content-type': 'application/x-www-form-urlencoded',
 				Authorization:
@@ -49,12 +59,15 @@ export async function GET(request: NextRequest) {
 
 		const data = await response.json();
 
+		console.log(data, 'data');
+
 		const accessToken = data.access_token;
 
 		cookies().set('spotify_access_token', accessToken, {
 			maxAge: 3600,
 		});
 
+		console.log(accessToken, 'token');
 		if (!!accessToken) {
 			const currentUserResponse = await fetch('https://api.spotify.com/v1/me', {
 				headers: {
@@ -66,6 +79,7 @@ export async function GET(request: NextRequest) {
 
 			const userData: ISpotifyData = await currentUserResponse.json();
 
+			console.log(userData, 'user data');
 			const createUserObjectResponse = await fetch(`${process.env.API_URL}/api/user/`, {
 				method: 'POST',
 				headers: {
@@ -80,8 +94,8 @@ export async function GET(request: NextRequest) {
 			});
 
 			const createUserObjectData = await createUserObjectResponse.json();
-		}
 
-		return redirect('/');
+			return redirect('/');
+		}
 	}
 }

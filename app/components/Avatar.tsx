@@ -51,7 +51,9 @@ export default function Avatar(props: IAvatar) {
 					{!isLoading ? (
 						<Image
 							className="rounded-full m-0"
-							src={props.src}
+							src={
+								props.src ?? 'https://static.thenounproject.com/png/212110-200.png'
+							}
 							alt={props.alt}
 							width={40}
 							height={40}

@@ -15,7 +15,10 @@ export default function Header(props: IHeader) {
 		<div className="mb-8 prose">
 			<Avatar
 				isLoading={isLoading}
-				src={props.currentUser?.spotify_data?.images?.[1]?.url ?? ''}
+				src={
+					props.currentUser?.spotify_data?.images?.[1]?.url ??
+					'https://static.thenounproject.com/png/212110-200.png'
+				}
 				alt={props.currentUser?.spotify_data?.display_name ?? ''}
 			/>
 			<h1 className={`mb-0 ${isLoading && 'skeleton w-96 h-10'}`}>

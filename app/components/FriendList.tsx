@@ -148,7 +148,10 @@ const ListView = (props: IFriendList) => {
 								) : (
 									<Image
 										className="rounded-full m-0 max-h-full"
-										src={userData?.avatar_url}
+										src={
+											userData?.avatar_url ??
+											'https://static.thenounproject.com/png/212110-200.png'
+										}
 										alt={userData?.display_name}
 										width={32}
 										height={32}
