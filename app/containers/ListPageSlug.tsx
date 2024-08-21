@@ -39,7 +39,7 @@ export default function ListPageSlug({ searchParams, accessToken, spotifyId }: I
 		isFetchingNextPage,
 		status,
 	} = useInfiniteQuery<Pagination<IArtist>>({
-		queryKey: ['list'] ?? '',
+		queryKey: [`list-${spotifyId}`] ?? '',
 		// `pageParam` is destructured and used to fetch the correct page
 		queryFn: async ({
 			pageParam,
@@ -61,6 +61,8 @@ export default function ListPageSlug({ searchParams, accessToken, spotifyId }: I
 		},
 		enabled: !!spotifyId,
 	});
+
+	console.log(artistsData, 'artist data');
 
 	const artists = artistsData?.pages?.map((page) => page.results).flat();
 
