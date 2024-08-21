@@ -11,10 +11,11 @@ import Tooltip from './Tooltip';
 import useInvalidateQuery from '@/hooks/useInvalidateQuery';
 import Avatar from './Avatar';
 import Image from 'next/image';
-import { faCheck, faHyphen, faSlash, faXmark } from '@fortawesome/pro-solid-svg-icons';
+import { faCheck, faEye, faHyphen, faSlash, faXmark } from '@fortawesome/pro-solid-svg-icons';
 import Divider from './Divider';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Pagination from './Pagination';
+import Link from 'next/link';
 interface IFriendList {
 	hasNextPage?: boolean;
 	isLoading?: boolean;
@@ -137,67 +138,96 @@ const ListView = (props: IFriendList) => {
 					const isActive = activeFriends?.map((a) => a).includes(userData?.id);
 					const isHovered = hoveredFriend === index;
 					return (
-						<div key={index} className="prose flex flex-row gap-2 items-center">
-							{props.isLoading ? (
-								<div className="rounded-full h-[32px] w-[32px] max-h-full skeleton" />
-							) : (
-								<Image
-									className="rounded-full m-0 max-h-full"
-									src={userData?.avatar_url}
-									alt={userData?.display_name}
-									width={32}
-									height={32}
-								/>
-							)}
-
-							<p className={`m-0 flex-1 ${props.isLoading && 'skeleton h-4 w-10'}`}>
-								{userData?.display_name}
-							</p>
-							{props.isLoading ? (
-								<div className="h-4 w-4 skeleton" />
-							) : (
-								<Tooltip
-									text={isActive ? 'Remove friend' : 'Add friend'}
-									className=""
-								>
-									<FontAwesomeIcon
-										onClick={async () => {
-											if (props.isLoading) return;
-
-											if (isActive) {
-												const response = await RemoveFriendFromList({
-													friendId: userData?.id,
-													spotifyId: props.user?.spotify_id ?? '',
-												});
-											} else {
-												const response = await AddFriendToList({
-													friendId: userData?.id,
-													spotifyId: props.user?.spotify_id ?? '',
-												});
-											}
-											await invalidateQuery([
-												'current-user-friends',
-												'friends',
-												'current-user',
-											]);
-											props.onInvalidate?.();
-
-											RevalidateTags({ tags: ['user', 'users'] });
-										}}
-										onMouseOver={() => setHoveredFriend(index)}
-										onMouseLeave={() => setHoveredFriend(null)}
-										className="text-neutral cursor-pointer"
-										size="lg"
-										icon={
-											isActive && isHovered
-												? faXmark
-												: isHovered || isActive
-												? faCheck
-												: faHyphen
-										}
+						<div key={index} className="prose flex flex-row gap-2 items-center ">
+							<Link
+								href={`/list/${userData?.spotify_id}`}
+								className="hover:scale-105 cursor-pointer transition-all flex flex-row items-center gap-2"
+							>
+								{props.isLoading ? (
+									<div className="rounded-full h-[32px] w-[32px] max-h-full skeleton" />
+								) : (
+									<Image
+										className="rounded-full m-0 max-h-full"
+										src={userData?.avatar_url}
+										alt={userData?.display_name}
+										width={32}
+										height={32}
 									/>
-								</Tooltip>
-							)}
+								)}
+
+								<p
+									className={`m-0 flex-1 ${
+										props.isLoading && 'skeleton h-4 w-10'
+									}`}
+								>
+									{userData?.display_name}
+								</p>
+							</Link>
+							<div className=" flex-1 justify-end flex items-center gap-2">
+								{props.isLoading ? (
+									<div className="h-4 w-4 skeleton " />
+								) : (
+									<Link href={`/list/${userData?.spotify_id}`}>
+										<Tooltip
+											text={`View ${
+												userData?.display_name ?? 'users'
+											}'s list`}
+											className=""
+										>
+											<FontAwesomeIcon
+												className="text-neutral cursor-pointer"
+												size="lg"
+												icon={faEye}
+											/>
+										</Tooltip>
+									</Link>
+								)}
+								{props.isLoading ? (
+									<div className="h-4 w-4 skeleton" />
+								) : (
+									<Tooltip
+										text={isActive ? 'Remove friend' : 'Add friend'}
+										className=""
+									>
+										<FontAwesomeIcon
+											onClick={async () => {
+												if (props.isLoading) return;
+
+												if (isActive) {
+													const response = await RemoveFriendFromList({
+														friendId: userData?.id,
+														spotifyId: props.user?.spotify_id ?? '',
+													});
+												} else {
+													const response = await AddFriendToList({
+														friendId: userData?.id,
+														spotifyId: props.user?.spotify_id ?? '',
+													});
+												}
+												await invalidateQuery([
+													'current-user-friends',
+													'friends',
+													'current-user',
+												]);
+												props.onInvalidate?.();
+
+												RevalidateTags({ tags: ['user', 'users'] });
+											}}
+											onMouseOver={() => setHoveredFriend(index)}
+											onMouseLeave={() => setHoveredFriend(null)}
+											className="text-neutral cursor-pointer size-5"
+											size="lg"
+											icon={
+												isActive && isHovered
+													? faXmark
+													: isHovered || isActive
+													? faCheck
+													: faHyphen
+											}
+										/>
+									</Tooltip>
+								)}
+							</div>
 						</div>
 					);
 				})}
