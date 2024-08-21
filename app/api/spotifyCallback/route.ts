@@ -24,20 +24,11 @@ export async function GET(request: NextRequest) {
 			url: 'https://accounts.spotify.com/api/token',
 			form: {
 				code: code,
-				redirect_uri: 'http://localhost:3000/api/spotifyCallback',
+				redirect_uri: process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI,
 				grant_type: 'authorization_code',
 				state: state,
 			},
-			// headers: {
-			// 	'content-type': 'application/x-www-form-urlencoded',
-			// 	Authorization:
-			// 		'Basic ' +
-			// 		Buffer.from(
-			// 			process.env.NEXT_PUBLIC_SPOTIFY_API_CLIENT_ID +
-			// 				':' +
-			// 				process.env.NEXT_PUBLIC_SPOTIFY_API_SECRET
-			// 		).toString('base64'),
-			// },
+
 			headers: {
 				'content-type': 'application/x-www-form-urlencoded',
 				Authorization:

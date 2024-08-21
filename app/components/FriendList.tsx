@@ -141,7 +141,7 @@ const ListView = (props: IFriendList) => {
 						<div key={index} className="prose flex flex-row gap-2 items-center ">
 							<Link
 								href={`/list/${userData?.spotify_id}`}
-								className="hover:scale-105 cursor-pointer transition-all flex flex-row items-center gap-2"
+								className="hover:scale-105 cursor-pointer transition-all flex flex-row items-center gap-2 no-underline"
 							>
 								{props.isLoading ? (
 									<div className="rounded-full h-[32px] w-[32px] max-h-full skeleton" />

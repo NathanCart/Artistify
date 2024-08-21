@@ -17,7 +17,7 @@ export default function Avatar(props: IAvatar) {
 	const { isLoading = false } = props;
 
 	return (
-		<div className={`${!!props.className ? props.className : ''} relative `}>
+		<div className={`${!!props.className ? props.className : ''} relative z-50`}>
 			<div
 				onClick={() => setOpen((prev) => !prev)}
 				className="flex gap-2 fixed top-6 right-6  items-center group cursor-pointer "
@@ -26,7 +26,6 @@ export default function Avatar(props: IAvatar) {
 					onClick={(e) => {
 						e.preventDefault();
 						e.stopPropagation();
-						console.log('click');
 						setOpen(false);
 					}}
 					className={`${
@@ -35,16 +34,19 @@ export default function Avatar(props: IAvatar) {
 				></div>
 
 				<div
-					className={`bg-base-200 w-fit right-1/3 top-10 p-2 prose ${
+					className={`bg-base-200 w-fit right-1/3 top-10 p-2 prose  ${
 						open ? 'absolute' : 'hidden'
 					}`}
 					tabIndex={0}
 				>
-					<Link href="/profile">
-						<p className="m-0">Profile</p>
+					<Link href="/" className="no-underline">
+						<p className="m-0 ">Home</p>
 					</Link>
-					<Link href="/logout">
-						<p className="m-0">Logout</p>
+					<Link href="/list" className="no-underline">
+						<p className="m-0 ">List</p>
+					</Link>
+					<Link href="/friends" className="no-underline">
+						<p className="m-0 ">Friends</p>
 					</Link>
 				</div>
 				<div className={`${props.isLoading && 'skeleton'} w-[40px] h-[40px] rounded-full`}>
