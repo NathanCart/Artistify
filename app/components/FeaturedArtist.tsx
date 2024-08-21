@@ -10,6 +10,9 @@ import Tooltip from './Tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare, faSquareCheck, faSquareXmark } from '@fortawesome/pro-duotone-svg-icons';
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { revalidateTag } from 'next/cache';
+import useInvalidateQuery from '@/hooks/useInvalidateQuery';
 
 interface IFeaturedArtist {
 	artist: IArtist | undefined;
@@ -21,22 +24,39 @@ export default function FeaturedArtist(props: IFeaturedArtist) {
 	const isActive = props.user?.artists?.map((a) => a.id).includes(props.artist?.id ?? '');
 	const [hoveredArtist, setHoveredArtist] = useState<boolean | null>(null);
 
+	const invalidateQuery = useInvalidateQuery();
+
+	const { mutateAsync: removeArtist } = useMutation<IUserResponse>({
+		mutationFn: async () =>
+			await RemoveArtistFromList({
+				artistId: props.artist?.id ?? '',
+				spotifyId: props.user?.spotify_id ?? '',
+			}),
+		onSuccess: async () => {
+			invalidateQuery(['current-user']);
+		},
+	});
+
+	const { mutateAsync: addArtist } = useMutation<IUserResponse>({
+		mutationFn: async () =>
+			await AddArtistToList({
+				artistId: props.artist?.id ?? '',
+				spotifyId: props.user?.spotify_id ?? '',
+			}),
+		onSuccess: async () => {
+			invalidateQuery(['current-user']);
+		},
+	});
+
 	if (!props.artist) return null;
 	return (
 		<div
 			onClick={async () => {
 				if (isActive) {
-					const response = await RemoveArtistFromList({
-						artistId: props.artist?.id ?? '',
-						spotifyId: props.user?.spotify_id ?? '',
-					});
+					const response = await removeArtist();
 				} else {
-					const response = await AddArtistToList({
-						artistId: props.artist?.id ?? '',
-						spotifyId: props.user?.spotify_id ?? '',
-					});
+					const response = await addArtist();
 				}
-				RevalidateTags({ tags: ['user', 'artists'] });
 			}}
 			className={`grid grid-cols-12 gap-6 ${!!props.className && props.className} `}
 		>

@@ -11,7 +11,7 @@ export default function InfiniteLoaderText(props: IInfiniteLoaderText) {
 	if (!props.enabled) return null;
 	return (
 		<div className="my-4">
-			{props.isFetchingNextPage ? (
+			{props.isFetchingNextPage || props.isLoadingQuery ? (
 				<div className="flex gap-1 items-center justify-center">
 					<p className="text-center font-bold ">Loading</p>
 					<span className="loading loading-dots loading-xs"></span>
