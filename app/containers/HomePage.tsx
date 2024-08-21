@@ -70,6 +70,8 @@ export default function HomePage({ searchParams, accessToken }: IHomePage) {
 
 	const hasNoResults = !artists?.length;
 
+	console.log(currentUser, 'current user');
+
 	return (
 		<main className="container p-4 relative">
 			<Header
@@ -98,7 +100,6 @@ export default function HomePage({ searchParams, accessToken }: IHomePage) {
 				currentPage={artistsData?.pages.length ?? 1}
 				hasNextPage={hasNextPage}
 				onLoadMore={async () => {
-					console.log('load more');
 					await fetchNextPage();
 					refetch();
 				}}

@@ -113,6 +113,30 @@ export async function RevalidateTags({ tags }: { tags: string[] }) {
 	await Promise.all(tags.map(async (tag) => await revalidateTag(tag)));
 }
 
+export async function getUserArtists({
+	accessToken,
+	spotifyId,
+	pageNum,
+}: {
+	accessToken: string;
+	spotifyId: string;
+	pageNum: number;
+}) {
+	const response = await fetch(
+		`${process.env.API_URL}/api/user/artists/?per_page=20&page_num=${pageNum}&spotifyId=${spotifyId}&accessToken=${accessToken}`,
+		{
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+			next: {
+				tags: ['artists'],
+			},
+		}
+	);
+	const data = await response.json();
+	return data;
+}
+
 export async function getArtists({
 	q,
 	type,

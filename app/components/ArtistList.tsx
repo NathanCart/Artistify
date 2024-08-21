@@ -16,7 +16,7 @@ interface IArtistList {
 
 export default function ArtistList(props: IArtistList) {
 	const activeArtists = props.user?.artists?.filter((artist) =>
-		props.artists?.map((a) => a.id).includes(artist.id)
+		props.artists?.map((a) => a?.id).includes(artist?.id)
 	);
 
 	const [hoveredArtist, setHoveredArtist] = useState<number | null>(null);
@@ -32,7 +32,7 @@ export default function ArtistList(props: IArtistList) {
 			hasMore={props.hasNextPage ?? false}
 		>
 			{props.artists?.map((artist, index) => {
-				const isActive = activeArtists?.map((a) => a.id).includes(artist.id);
+				const isActive = activeArtists?.map((a) => a?.id).includes(artist?.id);
 				const isHovered = hoveredArtist === index;
 				return (
 					<ArtlistListCard
