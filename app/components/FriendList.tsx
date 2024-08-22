@@ -160,7 +160,7 @@ const ListView = (props: IFriendList) => {
 
 								<p
 									className={`m-0 flex-1 ${
-										props.isLoading && 'skeleton h-4 w-10'
+										props.isLoading && 'skeleton h-4 w-52'
 									}`}
 								>
 									{userData?.display_name}
