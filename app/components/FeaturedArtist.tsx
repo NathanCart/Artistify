@@ -83,6 +83,7 @@ export default function FeaturedArtist(props: IFeaturedArtist) {
 						/>
 					</Tooltip>
 					<Image
+						unoptimized
 						className="rounded-sm"
 						src={props?.artist?.images?.[0]?.url ?? ''}
 						width={150}

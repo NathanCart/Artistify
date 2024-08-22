@@ -35,6 +35,7 @@ export default function Card(props: ICard) {
 				<div className="aspect-square w-full rounded-md skeleton" />
 			) : props.image ? (
 				<Image
+					unoptimized
 					priority
 					sizes="192px"
 					height={192}
