@@ -147,6 +147,7 @@ const ListView = (props: IFriendList) => {
 									<div className="rounded-full h-[32px] w-[32px] max-h-full skeleton" />
 								) : (
 									<Image
+										unoptimized
 										className="rounded-full m-0 max-h-full"
 										src={
 											userData?.avatar_url ??
