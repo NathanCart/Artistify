@@ -20,7 +20,7 @@ export default function Avatar(props: IAvatar) {
 		<div className={`${!!props.className ? props.className : ''} relative z-50`}>
 			<div
 				onClick={() => setOpen((prev) => !prev)}
-				className="flex gap-2 fixed top-6 right-6  items-center group cursor-pointer "
+				className="flex gap-2 fixed top-2 right-2 md:top-6 md:right-6  items-center group cursor-pointer "
 			>
 				<div
 					onClick={(e) => {
@@ -34,7 +34,7 @@ export default function Avatar(props: IAvatar) {
 				></div>
 
 				<div
-					className={`bg-base-200 w-fit right-1/3 top-10 p-2 prose  ${
+					className={`bg-base-300 rounded-md w-fit right-1/3 top-10 p-2 prose  ${
 						open ? 'absolute' : 'hidden'
 					}`}
 					tabIndex={0}
