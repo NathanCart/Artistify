@@ -19,9 +19,11 @@ interface IArtlistListCard {
 	artist: IArtist;
 	user: IUserResponse | undefined;
 	onChange?: () => void;
+	disableClick?: boolean;
 }
 
 export default function ArtlistListCard(props: IArtlistListCard) {
+	const { disableClick = false } = props;
 	const invalidateQuery = useInvalidateQuery();
 	const { mutateAsync: removeArtist } = useMutation<IUserResponse>({
 		mutationFn: async () =>
@@ -58,25 +60,29 @@ export default function ArtlistListCard(props: IArtlistListCard) {
 			className="grid col-span-6 sm:col-span-3 lg:col-span-2"
 		>
 			<Card
+				disableHover={disableClick}
 				icon={
-					<Tooltip
-						text={props.isActive ? 'Remove from your list' : 'Add to your list'}
-						className="!absolute left-2 top-2 "
-					>
-						<FontAwesomeIcon
-							className="text-neutral"
-							size="2x"
-							icon={
-								props.isActive && props.isHovered
-									? faSquareXmark
-									: props.isHovered || props.isActive
-									? faSquareCheck
-									: faSquare
-							}
-						/>
-					</Tooltip>
+					disableClick ? null : (
+						<Tooltip
+							text={props.isActive ? 'Remove from your list' : 'Add to your list'}
+							className="!absolute left-2 top-2 "
+						>
+							<FontAwesomeIcon
+								className="text-neutral"
+								size="2x"
+								icon={
+									props.isActive && props.isHovered
+										? faSquareXmark
+										: props.isHovered || props.isActive
+										? faSquareCheck
+										: faSquare
+								}
+							/>
+						</Tooltip>
+					)
 				}
 				onClick={async () => {
+					if (disableClick) return;
 					if (props.isActive) {
 						const response = await removeArtist();
 					} else {

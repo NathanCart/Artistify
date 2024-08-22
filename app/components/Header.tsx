@@ -13,19 +13,13 @@ export default function Header(props: IHeader) {
 	const { isLoading = false } = props;
 	return (
 		<div className="mb-8 prose">
-			<Avatar
-				isLoading={isLoading}
-				src={
-					props.currentUser?.spotify_data?.images?.[1]?.url ??
-					'https://static.thenounproject.com/png/212110-200.png'
-				}
-				alt={props.currentUser?.spotify_data?.display_name ?? ''}
-			/>
 			<h1 className={`mb-0 ${isLoading && 'skeleton w-96 h-10'}`}>
 				{!isLoading ? props.title : ''}
 			</h1>
 			{!!props.description?.length ? (
-				<p className={`font-body prose-sm mt-0 }`}>{props.description}</p>
+				<p className={`font-body prose-sm mt-0 ${isLoading && 'skeleton w-96 h-4 mt-2'}`}>
+					{isLoading ? null : props.description}
+				</p>
 			) : null}
 		</div>
 	);

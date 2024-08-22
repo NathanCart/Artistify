@@ -13,9 +13,11 @@ interface IArtistList {
 	onLoadMore?: () => void;
 	currentPage: number;
 	onChange?: () => void;
+	disableClick?: boolean;
 }
 
 export default function ArtistList(props: IArtistList) {
+	const { disableClick = false } = props;
 	const activeArtists = props.user?.artists?.filter((artist) =>
 		props.artists?.map((a) => a?.id).includes(artist?.id)
 	);
@@ -37,6 +39,7 @@ export default function ArtistList(props: IArtistList) {
 				const isHovered = hoveredArtist === index;
 				return (
 					<ArtlistListCard
+						disableClick={disableClick}
 						onChange={props.onChange}
 						key={index}
 						isActive={isActive}

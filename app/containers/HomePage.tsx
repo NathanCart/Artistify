@@ -83,11 +83,6 @@ export default function HomePage({ searchParams, accessToken }: IHomePage) {
 					<h2 className="mb-4 mt-8 md:hidden block">Search for an artist</h2>
 				</>
 			)}
-			<Avatar
-				isLoading={isLoadingCurrentUser}
-				src={currentUser?.spotify_data?.images?.[1]?.url ?? ''}
-				alt={currentUser?.spotify_data?.display_name ?? ''}
-			/>
 			<Suspense fallback={<div>Loading...</div>}>
 				<Search id="q" className="w-full  max-w-full md:hidden block" />
 			</Suspense>

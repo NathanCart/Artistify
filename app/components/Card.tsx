@@ -10,19 +10,21 @@ interface ICard {
 	description: string;
 	icon?: React.ReactNode;
 	onClick: () => Promise<void>;
+	disableHover?: boolean;
+	disabled?: boolean;
 }
 
 export default function Card(props: ICard) {
-	const { isLoading = false } = props;
+	const { isLoading = false, disableHover = false, disabled = false } = props;
 
 	return (
 		<div
 			onClick={props.onClick}
 			className={`card rounded-lg  transition-all relative ${
-				!isLoading && 'hover:scale-105 cursor-pointer '
+				!isLoading && !disableHover && 'hover:scale-105 cursor-pointer '
 			}`}
 		>
-			<div className={`z-20 relative ${props.isLoading && 'skeleton'}`}>
+			<div className={`z-20 relative ${(props.isLoading || disabled) && 'skeleton'}`}>
 				{props.icon && props.icon}
 			</div>
 			<div

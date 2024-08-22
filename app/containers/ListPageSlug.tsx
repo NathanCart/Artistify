@@ -62,8 +62,6 @@ export default function ListPageSlug({ searchParams, accessToken, spotifyId }: I
 		enabled: !!spotifyId,
 	});
 
-	console.log(artistsData, 'artist data');
-
 	const artists = artistsData?.pages?.map((page) => page.results).flat();
 
 	const hasSearchedAllPages = artistsData?.pages?.[artistsData?.pages?.length - 1]?.next === null;
@@ -84,6 +82,7 @@ export default function ListPageSlug({ searchParams, accessToken, spotifyId }: I
 			<h2 className="mb-4 mt-8"></h2>
 			{!hasNoResults ? (
 				<ArtistList
+					disableClick
 					onChange={async () => {
 						refetch();
 					}}
